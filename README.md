@@ -1,6 +1,6 @@
-# pynet_pyt_ans
+# py-ans
 
-## PyNet Python and Ansible Exercises
+## PyNet Python and Ansible Class/Exercises
 
 ### Homework 
 ### *Exercises*
