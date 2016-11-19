@@ -1,0 +1,95 @@
+LOCALLY/
+
+$ git clone git@github.com:p-montero/py-ans.git
+OR
+$ git clone https://github.com/p-montero/py-ans.git
+
+pmontero@akai:[Python+Ansible]$ git clone git@github.com:p-montero/py-ans.git
+Cloning into 'py-ans'...
+remote: Counting objects: 19, done.
+remote: Compressing objects: 100% (14/14), done.
+remote: Total 19 (delta 3), reused 0 (delta 0), pack-reused 0
+Receiving objects: 100% (19/19), 5.62 KiB | 0 bytes/s, done.
+Resolving deltas: 100% (3/3), done.
+Checking connectivity... done.
+
+pmontero@akai:[Python+Ansible]$ cd py-ans/
+pmontero@akai:[py-ans]$ ls -la
+total 32
+drwxr-xr-x   5 pmontero  staff    170 Nov 16 07:16 .
+drwxr-xr-x  11 pmontero  staff    374 Nov 16 07:16 ..
+drwxr-xr-x  13 pmontero  staff    442 Nov 16 07:16 .git
+-rw-r--r--   1 pmontero  staff  11357 Nov 16 07:16 LICENSE
+-rw-r--r--   1 pmontero  staff     85 Nov 16 07:16 README.md
+
+pmontero@akai:[py-ans]$ ls -la
+total 32
+
+drwxr-xr-x  14 pmontero  staff    476 Nov 16 07:21 .
+drwxr-xr-x  11 pmontero  staff    374 Nov 16 07:16 ..
+drwxr-xr-x  13 pmontero  staff    442 Nov 16 07:16 .git
+-rw-r--r--   1 pmontero  staff  11357 Nov 16 07:16 LICENSE
+-rw-r--r--   1 pmontero  staff     85 Nov 16 07:16 README.md
+drwxr-xr-x   2 pmontero  staff     68 Nov 16 07:20 class1
+drwxr-xr-x   2 pmontero  staff     68 Nov 16 07:20 class2
+drwxr-xr-x   2 pmontero  staff     68 Nov 16 07:21 class3
+drwxr-xr-x   2 pmontero  staff     68 Nov 16 07:21 class4
+drwxr-xr-x   2 pmontero  staff     68 Nov 16 07:21 class5
+drwxr-xr-x   2 pmontero  staff     68 Nov 16 07:21 class6
+drwxr-xr-x   2 pmontero  staff     68 Nov 16 07:21 class7
+drwxr-xr-x   2 pmontero  staff     68 Nov 16 07:21 class8
+drwxr-xr-x   2 pmontero  staff     68 Nov 16 07:21 class9
+
+AWS HOST /
+
+pmontero@ip-172-30-0-7:[git]$ git clone git@github.com:p-montero/py-ans.git
+Cloning into 'py-ans'...
+remote: Counting objects: 19, done.
+remote: Compressing objects: 100% (14/14), done.
+remote: Total 19 (delta 3), reused 0 (delta 0), pack-reused 0
+Receiving objects: 100% (19/19), 5.62 KiB | 0 bytes/s, done.
+Resolving deltas: 100% (3/3), done.
+
+pmontero@ip-172-30-0-7:[py-ans]$ ls -la
+total 28
+drwxrwxr-x 3 pmontero pmontero  4096 Nov 19 14:06 .
+drwxrwxr-x 3 pmontero pmontero  4096 Nov 19 14:06 ..
+drwxrwxr-x 8 pmontero pmontero  4096 Nov 19 14:06 .git
+-rw-rw-r-- 1 pmontero pmontero 11357 Nov 19 14:06 LICENSE
+-rw-rw-r-- 1 pmontero pmontero    85 Nov 19 14:06 README.md
+pmontero@ip-172-30-0-7:[py-ans]$ mkdir class1
+pmontero@ip-172-30-0-7:[py-ans]$ mkdir class2
+pmontero@ip-172-30-0-7:[py-ans]$ mkdir class3
+pmontero@ip-172-30-0-7:[py-ans]$ mkdir class4
+pmontero@ip-172-30-0-7:[py-ans]$ mkdir class5
+pmontero@ip-172-30-0-7:[py-ans]$ mkdir class6
+pmontero@ip-172-30-0-7:[py-ans]$ mkdir class7
+pmontero@ip-172-30-0-7:[py-ans]$ mkdir class8
+pmontero@ip-172-30-0-7:[py-ans]$ mkdir class9
+pmontero@ip-172-30-0-7:[py-ans]$ ls -la
+total 64
+drwxrwxr-x 12 pmontero pmontero  4096 Nov 19 14:07 .
+drwxrwxr-x  3 pmontero pmontero  4096 Nov 19 14:06 ..
+drwxrwxr-x  2 pmontero pmontero  4096 Nov 19 14:07 class1
+drwxrwxr-x  2 pmontero pmontero  4096 Nov 19 14:07 class2
+drwxrwxr-x  2 pmontero pmontero  4096 Nov 19 14:07 class3
+drwxrwxr-x  2 pmontero pmontero  4096 Nov 19 14:07 class4
+drwxrwxr-x  2 pmontero pmontero  4096 Nov 19 14:07 class5
+drwxrwxr-x  2 pmontero pmontero  4096 Nov 19 14:07 class6
+drwxrwxr-x  2 pmontero pmontero  4096 Nov 19 14:07 class7
+drwxrwxr-x  2 pmontero pmontero  4096 Nov 19 14:07 class8
+drwxrwxr-x  2 pmontero pmontero  4096 Nov 19 14:07 class9
+drwxrwxr-x  8 pmontero pmontero  4096 Nov 19 14:06 .git
+-rw-rw-r--  1 pmontero pmontero 11357 Nov 19 14:06 LICENSE
+-rw-rw-r--  1 pmontero pmontero    85 Nov 19 14:06 README.md
+pmontero@ip-172-30-0-7:[py-ans]$
+Checking connectivity... done.
+pmontero@ip-172-30-0-7:[git]$ ls -la
+total 12
+drwxrwxr-x  3 pmontero pmontero 4096 Nov 19 14:06 .
+drwx------ 11 pmontero pmontero 4096 Nov 19 14:02 ..
+drwxrwxr-x  3 pmontero pmontero 4096 Nov 19 14:06 py-ans
+pmontero@ip-172-30-0-7:[git]$
+
+
+
