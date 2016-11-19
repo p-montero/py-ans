@@ -1,0 +1,70 @@
+
+pmontero@akai:[class1]$ vi ex3.txt
+pmontero@akai:[class1]$ pwd -P
+/Users/pmontero/WORK/eLearning/Automation/Python/PyNet/Python+Ansible/py-ans/class1
+pmontero@akai:[class1]$ cd ..
+pmontero@akai:[py-ans]$ ls -la
+total 32
+drwxr-xr-x  14 pmontero  staff    476 Nov 16 07:21 .
+drwxr-xr-x  11 pmontero  staff    374 Nov 16 07:16 ..
+drwxr-xr-x  14 pmontero  staff    476 Nov 16 07:26 .git
+-rw-r--r--   1 pmontero  staff  11357 Nov 16 07:16 LICENSE
+-rw-r--r--   1 pmontero  staff     85 Nov 16 07:16 README.md
+drwxr-xr-x   3 pmontero  staff    102 Nov 19 16:09 class1
+drwxr-xr-x   2 pmontero  staff     68 Nov 16 07:20 class2
+drwxr-xr-x   2 pmontero  staff     68 Nov 16 07:21 class3
+drwxr-xr-x   2 pmontero  staff     68 Nov 16 07:21 class4
+drwxr-xr-x   2 pmontero  staff     68 Nov 16 07:21 class5
+drwxr-xr-x   2 pmontero  staff     68 Nov 16 07:21 class6
+drwxr-xr-x   2 pmontero  staff     68 Nov 16 07:21 class7
+drwxr-xr-x   2 pmontero  staff     68 Nov 16 07:21 class8
+drwxr-xr-x   2 pmontero  staff     68 Nov 16 07:21 class9
+pmontero@akai:[py-ans]$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	class1/
+
+nothing added to commit but untracked files present (use "git add" to track)
+pmontero@akai:[py-ans]$ git add class1/*
+pmontero@akai:[py-ans]$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+	new file:   class1/ex3.txt
+
+pmontero@akai:[py-ans]$ git commit orinal master
+error: pathspec 'orinal' did not match any file(s) known to git.
+error: pathspec 'master' did not match any file(s) known to git.
+pmontero@akai:[py-ans]$ git commit -m "class1/ex3 update"
+[master dc80235] class1/ex3 update
+ Committer: Pedro Montero <pmontero@moh-gr41xw1.corp.twcable.com>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 1 file changed, 95 insertions(+)
+ create mode 100644 class1/ex3.txt
+pmontero@akai:[py-ans]$ git push
+Counting objects: 4, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (4/4), 1.01 KiB | 0 bytes/s, done.
+Total 4 (delta 0), reused 0 (delta 0)
+To git@github.com:p-montero/py-ans.git
+   0caf98c..dc80235  master -> master
+pmontero@akai:[py-ans]$
+
+//File has been updated in /master branch of py-ans repository
