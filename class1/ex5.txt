@@ -1,0 +1,72 @@
+// Updating the AWS local repository using pull before adding the BRANCH dev
+
+pmontero@ip-172-30-0-7:[py-ans]$ git pull
+remote: Counting objects: 8, done.
+remote: Compressing objects: 100% (6/6), done.
+remote: Total 8 (delta 1), reused 8 (delta 1), pack-reused 0
+Unpacking objects: 100% (8/8), done.
+From github.com:p-montero/py-ans
+   0caf98c..f8cd38d  master     -> origin/master
+Updating 0caf98c..f8cd38d
+Fast-forward
+ class1/ex3.txt | 95 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ class1/ex4.txt | 70 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 165 insertions(+)
+ create mode 100644 class1/ex3.txt
+ create mode 100644 class1/ex4.txt
+pmontero@ip-172-30-0-7:[py-ans]$ ls -la
+total 64
+drwxrwxr-x 12 pmontero pmontero  4096 Nov 19 14:07 .
+drwxrwxr-x  3 pmontero pmontero  4096 Nov 19 14:06 ..
+drwxrwxr-x  2 pmontero pmontero  4096 Nov 19 14:44 class1
+drwxrwxr-x  2 pmontero pmontero  4096 Nov 19 14:07 class2
+drwxrwxr-x  2 pmontero pmontero  4096 Nov 19 14:07 class3
+drwxrwxr-x  2 pmontero pmontero  4096 Nov 19 14:07 class4
+drwxrwxr-x  2 pmontero pmontero  4096 Nov 19 14:07 class5
+drwxrwxr-x  2 pmontero pmontero  4096 Nov 19 14:07 class6
+drwxrwxr-x  2 pmontero pmontero  4096 Nov 19 14:07 class7
+drwxrwxr-x  2 pmontero pmontero  4096 Nov 19 14:07 class8
+drwxrwxr-x  2 pmontero pmontero  4096 Nov 19 14:07 class9
+drwxrwxr-x  8 pmontero pmontero  4096 Nov 19 14:44 .git
+-rw-rw-r--  1 pmontero pmontero 11357 Nov 19 14:06 LICENSE
+-rw-rw-r--  1 pmontero pmontero    85 Nov 19 14:06 README.md
+pmontero@ip-172-30-0-7:[py-ans]$ cd class1
+pmontero@ip-172-30-0-7:[class1]$ ls -la
+total 16
+drwxrwxr-x  2 pmontero pmontero 4096 Nov 19 14:44 .
+drwxrwxr-x 12 pmontero pmontero 4096 Nov 19 14:07 ..
+-rw-rw-r--  1 pmontero pmontero 3965 Nov 19 14:44 ex3.txt
+-rw-rw-r--  1 pmontero pmontero 2779 Nov 19 14:44 ex4.txt
+pmontero@ip-172-30-0-7:[class1]$
+
+// Adding BRANCH dev with file ex5.txt
+
+pmontero@ip-172-30-0-7:[class1]$ git branch
+* master
+pmontero@ip-172-30-0-7:[class1]$ git branch test
+pmontero@ip-172-30-0-7:[class1]$ git branch
+* master
+  test
+pmontero@ip-172-30-0-7:[class1]$ git checkout test
+Switched to branch 'test'
+
+pmontero@ip-172-30-0-7:[class1]$ git branch
+  master
+* test
+
+/This file is saved as ex5.txt in the "test" branch
+
+pmontero@ip-172-30-0-7:[class1]$ ls -la
+total 20
+drwxrwxr-x  2 pmontero pmontero 4096 Nov 19 15:50 .
+drwxrwxr-x 12 pmontero pmontero 4096 Nov 19 14:07 ..
+-rw-rw-r--  1 pmontero pmontero 3965 Nov 19 14:44 ex3.txt
+-rw-rw-r--  1 pmontero pmontero 2779 Nov 19 14:44 ex4.txt
+-rw-rw-r--  1 pmontero pmontero 2330 Nov 19 15:50 ex5.txt
+pmontero@ip-172-30-0-7:[class1]$ git branch
+  master
+* test
+pmontero@ip-172-30-0-7:[class1]$ git checkout master
+Switched to branch 'master'
+Your branch is up-to-date with 'origin/master'.
+pmontero@ip-172-30-0-7:[class1]$
