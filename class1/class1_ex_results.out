@@ -1,0 +1,112 @@
+! class1_ex_notes
+
+# ex6.py
+
+pmontero@akai:[class1]$ ls -la
+total 80
+drwxr-xr-x  12 pmontero  staff   408 Nov 20 17:19 .
+drwxr-xr-x  14 pmontero  staff   476 Nov 16 07:21 ..
+-rw-r--r--   1 pmontero  staff   119 Nov 20 17:19 class1_ex6.json
+-rw-r--r--   1 pmontero  staff   103 Nov 20 17:19 class1_ex6.yml
+-rwxr-xr-x   1 pmontero  staff   626 Nov 20 17:18 ex10.py
+-rw-r--r--   1 pmontero  staff  3965 Nov 19 16:09 ex3.txt
+-rw-r--r--@  1 pmontero  staff  2779 Nov 19 16:18 ex4.txt
+-rw-r--r--   1 pmontero  staff  2881 Nov 20 17:05 ex5.txt
+-rwxr-xr-x   1 pmontero  staff   626 Nov 20 17:15 ex6.py
+-rwxr-xr-x   1 pmontero  staff   626 Nov 20 17:16 ex7.py
+-rwxr-xr-x   1 pmontero  staff   626 Nov 20 17:16 ex8.py
+-rwxr-xr-x   1 pmontero  staff   626 Nov 20 17:17 ex9.py
+pmontero@akai:[class1]$ cat class1_ex6.json
+["lab_router", "austin", {"model": "MX480", "hostname": "CNI3TXMX1CW", "snmp_ro": "public", "loopback_ip": "22.2.2.1"}]
+pmontero@akai:[class1]$ cat class1_ex6.yml
+- lab_router
+- austin
+- hostname: CNI3TXMX1CW
+  loopback_ip: 22.2.2.1
+  model: MX480
+  snmp_ro: public
+
+# ex7.py
+
+pmontero@akai:[class1]$ ./ex7.py
+
+
+=======================
+ YAML DATA STRUCTURE
+=======================
+
+
+['lab_router',
+ 'austin',
+ {'hostname': 'CNI3TXMX1CW',
+  'loopback_ip': '22.2.2.1',
+  'model': 'MX480',
+  'snmp_ro': 'public'}]
+
+
+=======================
+ JSON DATA STRUCTURE
+=======================
+
+
+[u'lab_router',
+ u'austin',
+ {u'hostname': u'CNI3TXMX1CW',
+  u'loopback_ip': u'22.2.2.1',
+  u'model': u'MX480',
+  u'snmp_ro': u'public'}]
+
+# ex8.py
+
+  pmontero@akai:[class1]$ ./ex8.py
+  LINES containing: crypto map CRYPTO :
+  'crypto map CRYPTO 10 ipsec-isakmp '
+  ' set peer 1.1.1.1'
+  ' set transform-set AES-SHA '
+  ' set pfs group5'
+  ' match address VPN-TEST1'
+  -:-
+  'crypto map CRYPTO 20 ipsec-isakmp '
+  ' set peer 2.2.2.1'
+  ' set transform-set AES-SHA '
+  ' set pfs group2'
+  ' match address VPN-TEST2'
+  -:-
+  'crypto map CRYPTO 30 ipsec-isakmp '
+  ' set peer 3.3.3.1'
+  ' set transform-set AES-SHA '
+  ' set pfs group2'
+  ' match address VPN-TEST3'
+  -:-
+  'crypto map CRYPTO 40 ipsec-isakmp '
+  ' set peer 4.4.4.1'
+  ' set transform-set AES-SHA '
+  ' set pfs group5'
+  ' match address VPN-TEST4'
+  -:-
+  'crypto map CRYPTO 50 ipsec-isakmp '
+  ' set peer 5.5.5.1'
+  ' set transform-set 3DES-SHA '
+  ' set pfs group5'
+  ' match address VPN-TEST5'
+  -:-
+  -- END --
+
+# ex9.py
+
+pmontero@akai:[class1]$ ./ex9.py
+LINES containing: crypto map CRYPTO & using PFS Group2 >
+-:-
+  crypto map CRYPTO 20 ipsec-isakmp
+-:-
+  crypto map CRYPTO 30 ipsec-isakmp
+-:-
+END
+
+pmontero@akai:[class1]$ ./ex10.py
+LINES containing: crypto map CRYPTO & no using AES as the transform-set
+-:-
+crypto map CRYPTO 50 ipsec-isakmp
+ set transform-set 3DES-SHA
+-:-
+END

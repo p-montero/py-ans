@@ -1,0 +1,6 @@
+- lab_router
+- austin
+- hostname: CNI3TXMX1CW
+  loopback_ip: 22.2.2.1
+  model: MX480
+  snmp_ro: public
