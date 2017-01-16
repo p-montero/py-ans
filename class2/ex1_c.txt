@@ -1,0 +1,145 @@
+
+# Exercise 1 c
+
+# Symbolic links locals:
+pmontero@akai:[~]$ ls -la pyn*
+lrwxr-xr-x  1 pmontero  staff  82 Jan 15 16:04 pynet1 -> /Users/pmontero/WORK/eLearning/Automation/Python/PyNet/Free Class Learning Python/
+lrwxr-xr-x  1 pmontero  staff  70 Jan 15 16:03 pynet2 -> /Users/pmontero/WORK/eLearning/Automation/Python/PyNet/Python+Ansible/
+
+# my_func.py module created
+pmontero@akai:[class2]$ ls -la my_func.py
+-rwxr-xr-x  1 pmontero  staff  197 Jan 15 15:47 my_func.py
+pmontero@akai:[class2]$
+
+pmontero@akai:[class2]$ cat ex1_c.py
+#!/usr/bin/env python
+'''
+Simple Python script calling (module name = my_func.py)
+'''
+
+from my_func import phello as p
+p()
+
+# my_func.py is located in the same directory as your script
+pmontero@akai:[class2]$ ./ex1_c.py
+hello
+
+# my_func.py is located in some random subdirectory (not the same directory as your script)
+# my_func.py moved to: /Users/pmontero/WORK/eLearning/Automation/Python/PyNet/Python+Ansible/py-ans/class2/random
+# or pynet2/py-ans/class2/random using soft links
+
+pmontero@akai:[class2]$ pwd
+/Users/pmontero/WORK/eLearning/Automation/Python/PyNet/Python+Ansible/py-ans/class2
+pmontero@akai:[class2]$ mkdir random
+pmontero@akai:[class2]$ mv my_func.py random/
+pmontero@akai:[class2]$ rm my_func.pyc
+pmontero@akai:[class2]$ ./ex1_c.py
+Traceback (most recent call last):
+  File "./ex1_c.py", line 6, in <module>
+    from my_func import phello as p
+ImportError: No module named my_func
+pmontero@akai:[class2]$
+
+ImportError ??? Where Python is looking up for my_func.py
+
+pmontero@akai:[.ssh]$ p2
+Python 2.7.12 (default, Oct 11 2016, 05:24:00)
+[GCC 4.2.1 Compatible Apple LLVM 8.0.0 (clang-800.0.38)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import sys
+>>> from pprint import pprint as p
+>>> p(sys.path)
+['',
+ '/usr/local/Cellar/python/2.7.12_2/Frameworks/Python.framework/Versions/2.7/lib/python27.zip',
+ '/usr/local/Cellar/python/2.7.12_2/Frameworks/Python.framework/Versions/2.7/lib/python2.7',
+ '/usr/local/Cellar/python/2.7.12_2/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-darwin',
+ '/usr/local/Cellar/python/2.7.12_2/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-mac',
+ '/usr/local/Cellar/python/2.7.12_2/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-mac/lib-scriptpackages',
+ '/usr/local/Cellar/python/2.7.12_2/Frameworks/Python.framework/Versions/2.7/lib/python2.7/lib-tk',
+ '/usr/local/Cellar/python/2.7.12_2/Frameworks/Python.framework/Versions/2.7/lib/python2.7/lib-old',
+ '/usr/local/Cellar/python/2.7.12_2/Frameworks/Python.framework/Versions/2.7/lib/python2.7/lib-dynload',
+ '/usr/local/lib/python2.7/site-packages',
+ '/Library/Python/2.7/site-packages/netaddr-0.7.18-py2.7.egg',
+ '/Library/Python/2.7/site-packages/PyYAML-3.11-py2.7-macosx-10.10-intel.egg',
+ '/Library/Python/2.7/site-packages/Jinja2-2.8-py2.7.egg',
+ '/Library/Python/2.7/site-packages/scp-0.10.2-py2.7.egg',
+ '/Library/Python/2.7/site-packages/paramiko-1.16.0-py2.7.egg',
+ '/Library/Python/2.7/site-packages/ncclient-0.4.6-py2.7.egg',
+ '/Library/Python/2.7/site-packages']
+>>>
+
+New folder is NOT in the environment variable PYTHONPATH
+
+pmontero@akai:[class2]$ export PYTHONPATH='/Users/pmontero/WORK/eLearning/Automation/Python/PyNet/Python+Ansible/py-ans/class2/random'
+pmontero@akai:[class2]$ ./ex1_c.py
+hello
+
+pmontero@akai:[class2]$ p2
+Python 2.7.12 (default, Oct 11 2016, 05:24:00)
+[GCC 4.2.1 Compatible Apple LLVM 8.0.0 (clang-800.0.38)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import sys
+>>> from pprint import pprint as p
+>>> p(sys.path)
+['',
+ '/Users/pmontero/WORK/eLearning/Automation/Python/PyNet/Python+Ansible/py-ans/class2/random',        >> Notice the /random folder added to the PYTHONPATH
+ '/usr/local/Cellar/python/2.7.12_2/Frameworks/Python.framework/Versions/2.7/lib/python27.zip',
+ '/usr/local/Cellar/python/2.7.12_2/Frameworks/Python.framework/Versions/2.7/lib/python2.7',
+ '/usr/local/Cellar/python/2.7.12_2/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-darwin',
+ '/usr/local/Cellar/python/2.7.12_2/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-mac',
+ '/usr/local/Cellar/python/2.7.12_2/Frameworks/Python.framework/Versions/2.7/lib/python2.7/plat-mac/lib-scriptpackages',
+ '/usr/local/Cellar/python/2.7.12_2/Frameworks/Python.framework/Versions/2.7/lib/python2.7/lib-tk',
+ '/usr/local/Cellar/python/2.7.12_2/Frameworks/Python.framework/Versions/2.7/lib/python2.7/lib-old',
+ '/usr/local/Cellar/python/2.7.12_2/Frameworks/Python.framework/Versions/2.7/lib/python2.7/lib-dynload',
+ '/usr/local/lib/python2.7/site-packages',
+ '/Library/Python/2.7/site-packages/netaddr-0.7.18-py2.7.egg',
+ '/Library/Python/2.7/site-packages/PyYAML-3.11-py2.7-macosx-10.10-intel.egg',
+ '/Library/Python/2.7/site-packages/Jinja2-2.8-py2.7.egg',
+ '/Library/Python/2.7/site-packages/scp-0.10.2-py2.7.egg',
+ '/Library/Python/2.7/site-packages/paramiko-1.16.0-py2.7.egg',
+ '/Library/Python/2.7/site-packages/ncclient-0.4.6-py2.7.egg',
+ '/Library/Python/2.7/site-packages']
+>>>
+
+# my_func.py is located in /usr/local/lib/python2.7/site-packages which is already included in the env PYTHONPATH
+# not using virtualenv here..
+
+pmontero@akai:[class2]$ cd random/
+pmontero@akai:[random]$ ls -la
+total 16
+drwxr-xr-x   4 pmontero  staff  136 Jan 15 16:17 .
+drwxr-xr-x  10 pmontero  staff  340 Jan 15 16:10 ..
+-rwxr-xr-x   1 pmontero  staff  159 Jan 15 15:52 my_func.py
+-rw-r--r--   1 pmontero  staff  518 Jan 15 16:17 my_func.pyc
+
+pmontero@akai:[random]$ echo $PYTHONPATH
+/Users/pmontero/WORK/eLearning/Automation/Python/PyNet/Python+Ansible/py-ans/class2/random
+
+pmontero@akai:[random]$ unset PYTHONPATH
+pmontero@akai:[random]$ echo $PYTHONPATH
+<cleared>
+
+pmontero@akai:[random]$ mv my_func.py /usr/local/lib/python2.7/site-packages
+pmontero@akai:[random]$ ls -la
+total 8
+drwxr-xr-x   3 pmontero  staff  102 Jan 15 16:33 .
+drwxr-xr-x  10 pmontero  staff  340 Jan 15 16:10 ..
+-rw-r--r--   1 pmontero  staff  518 Jan 15 16:17 my_func.pyc
+pmontero@akai:[random]$ cd ..
+pmontero@akai:[class2]$ rm -r random/
+! File/folder have been removed
+pmontero@akai:[class2]$ ./ex1_c.py
+hello
+
+Restoring the file to pynet2/py-ans/class2
+pmontero@akai:[~]$ mv /usr/local/lib/python2.7/site-packages/my_func.py pynet2/py-ans/class2
+pmontero@akai:[~]$ cd pynet2/py-ans/class2
+pmontero@akai:[class2]$ ls -la
+total 72
+drwxr-xr-x  10 pmontero  staff   340 Jan 15 16:37 .
+drwxr-xr-x  14 pmontero  staff   476 Nov 16 07:21 ..
+-rwxr-xr-x   1 pmontero  staff   982 Nov 28 07:18 ex10.py
+-rw-r--r--   1 pmontero  staff  3325 Jan 15 15:19 ex1_a_b.txt
+-rwxr-xr-x   1 pmontero  staff   124 Jan 15 15:55 ex1_c.py
+-rw-r--r--   1 pmontero  staff  6157 Jan 15 16:35 ex1_c.txt
+-rwxr-xr-x   1 pmontero  staff   159 Jan 15 15:52 my_func.py
