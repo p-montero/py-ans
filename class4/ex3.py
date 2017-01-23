@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 '''
-Use Paramiko to retrieve the entire 'show version' output from pynet-rtr2
+Use Pexpect to retrieve the output of 'show ip int brief' from pynet-rtr2.
 
 The username and password for pynet-rtr1, pynet-rtr2, and for the juniper-srx are:
 username: pyclass
@@ -9,7 +9,7 @@ password: 88newclass
 NOTE: Solution is limited to the exercise's scope
 '''
 
-import paramiko
+import pexpect
 # from getpass import getpass as gp
 from pprint import pprint as pp
 '''
@@ -28,26 +28,28 @@ def main():
     " Main function definition"
 #
     " Opening SSH connection"
-    rem_conn_ssh = paramiko.SSHClient()
-    rem_conn_ssh.load_system_host_keys()
-    rem_conn_ssh.connect(rtr2_ip, port=port, username=username, password=passwd, look_for_keys=False, allow_agent=False)
-    " Start an interactive shell session on the SSH server"
-    rem_conn = rem_conn_ssh.invoke_shell()
-    #print "Establishing an SSH session to %s", % rtr2_ip
     print "Establishing an SSH session to "+colored(rtr2_ip, 'blue')
     print "**********************************"
-    time.sleep(3)
+    rem_conn_ssh = pexpect.spawn('ssh -l {} {} -p {}'.format(username, rtr2_ip, port))
+    rem_conn_ssh.timeout = 10
+    #print "Establishing an SSH session to %s", % rtr2_ip
+    " Match ssword:"
+    rem_conn_ssh.expect('ssword:')
+    " Local connection to pylab using sshutle vpn and take few seconds ..."
+    rem_conn_ssh.sendline(passwd)
+    " Match prompt after sucessful password"
+    rem_conn_ssh.expect('#')
+    time.sleep(1)
     " Sending commands "
     " Pagination OFF Cisco IOS"
-    rem_conn.send("terminal length 0\n")
-    time.sleep(2)
-    "Clear the buffer reading it"
-    rem_conn.recv(100)
-    rem_conn.send("show version\n")
-    time.sleep(3)
-    output = rem_conn.recv(65535)
-    print "Issuing <show version> \n"
-    print output
+    rem_conn_ssh.sendline('terminal length 0')
+    rem_conn_ssh.expect('#')
+    time.sleep(1)
+    rem_conn_ssh.sendline('show ip int br')
+    rem_conn_ssh.expect('#')
+    time.sleep(1)
+    print "Output to <show ip int br> ... \n"
+    print rem_conn_ssh.before
 
 if __name__ == "__main__":
     main()

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 '''
-Use Paramiko to retrieve the entire 'show version' output from pynet-rtr2
+Use Paramiko to change the 'logging buffered <size>' configuration on pynet-rtr2.
+This will require that you enter into configuration mode.
 
 The username and password for pynet-rtr1, pynet-rtr2, and for the juniper-srx are:
 username: pyclass
@@ -40,13 +41,18 @@ def main():
     " Sending commands "
     " Pagination OFF Cisco IOS"
     rem_conn.send("terminal length 0\n")
-    time.sleep(2)
+    time.sleep(1)
+    rem_conn.send("configure t\n")
+    time.sleep(1)
+    rem_conn.send("logging buffered 65536\n")
+    time.sleep(1)
+    rem_conn.send("end\n")
     "Clear the buffer reading it"
     rem_conn.recv(100)
-    rem_conn.send("show version\n")
+    rem_conn.send("show run | i logging\n")
     time.sleep(3)
     output = rem_conn.recv(65535)
-    print "Issuing <show version> \n"
+    print "Checking configuration changes ... \n"
     print output
 
 if __name__ == "__main__":
