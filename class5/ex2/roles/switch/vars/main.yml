@@ -1,0 +1,12 @@
+---
+switches:
+  - {hostname: cni1txausw1, secret: p@ssw0rd, ip_addr: 172.160.10.10,
+        default_gateway: 172.160.10.1, vlan_id: 100, snmp_ro_community: public, snmp_v3: True}
+  - {hostname: cni1txausw2, secret: p@ssw0rd, ip_addr: 172.160.11.10,
+        default_gateway: 172.160.11.1, vlan_id: 101, snmp_ro_community: public, snmp_v3: False}
+  - {hostname: cni1txausw3, secret: p@ssw0rd, ip_addr: 172.160.12.10,
+        default_gateway: 172.160.12.1, vlan_id: 102, snmp_ro_community: public, snmp_v3: False}
+  - {hostname: cni1txausw4, secret: p@ssw0rd, ip_addr: 172.160.13.10,
+        default_gateway: 172.160.13.1, vlan_id: 103, snmp_ro_community: public, snmp_v3: False}
+  - {hostname: cni1txausw5, secret: p@ssw0rd, ip_addr: 172.160.14.10,
+        default_gateway: 172.160.14.1, vlan_id: 104, snmp_ro_community: public, snmp_v3: True}

@@ -1,0 +1,315 @@
+
+// Exercise 1
+
+pmontero@akai:[ex1]$ ansible-playbook site.yml --check
+ [WARNING]: Host file not found: /usr/local/etc/ansible/hosts
+ [WARNING]: provided hosts list is empty, only localhost is available
+
+Create hosts file
+pmontero@akai:[etc]$ cat /usr/local/etc/ansible/hosts
+[local]
+localhost ansible_connection=local
+
+pmontero@akai:[ex1]$ ansible-playbook site.yml --check
+
+PLAY [Switch configuration file template.] *************************************
+
+TASK [setup] *******************************************************************
+ok: [localhost]
+
+TASK [switch : Generate switch configuration file] *****************************
+changed: [localhost] => (item={u'ip_addr': u'172.160.10.10', u'default_gateway': u'172.160.10.1', u'hostname': u'cni1txausw1', u'secret': u'p@ssw0rd', u'snmp_ro_community': u'public', u'vlan_id': 100})
+changed: [localhost] => (item={u'ip_addr': u'172.160.11.10', u'default_gateway': u'172.160.11.1', u'hostname': u'cni1txausw2', u'secret': u'p@ssw0rd', u'snmp_ro_community': u'public', u'vlan_id': 101})
+changed: [localhost] => (item={u'ip_addr': u'172.160.12.10', u'default_gateway': u'172.160.12.1', u'hostname': u'cni1txausw3', u'secret': u'p@ssw0rd', u'snmp_ro_community': u'public', u'vlan_id': 102})
+changed: [localhost] => (item={u'ip_addr': u'172.160.13.10', u'default_gateway': u'172.160.13.1', u'hostname': u'cni1txausw4', u'secret': u'p@ssw0rd', u'snmp_ro_community': u'public', u'vlan_id': 103})
+changed: [localhost] => (item={u'ip_addr': u'172.160.14.10', u'default_gateway': u'172.160.14.1', u'hostname': u'cni1txausw5', u'secret': u'p@ssw0rd', u'snmp_ro_community': u'public', u'vlan_id': 104})
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=2    changed=1    unreachable=0    failed=0
+
+Applying changes:
+
+pmontero@akai:[ex1]$ ansible-playbook site.yml
+
+PLAY [Switch configuration file template.] *************************************
+
+TASK [setup] *******************************************************************
+ok: [localhost]
+
+TASK [switch : Generate switch configuration file] *****************************
+changed: [localhost] => (item={u'ip_addr': u'172.160.10.10', u'default_gateway': u'172.160.10.1', u'hostname': u'cni1txausw1', u'secret': u'p@ssw0rd', u'snmp_ro_community': u'public', u'vlan_id': 100})
+changed: [localhost] => (item={u'ip_addr': u'172.160.11.10', u'default_gateway': u'172.160.11.1', u'hostname': u'cni1txausw2', u'secret': u'p@ssw0rd', u'snmp_ro_community': u'public', u'vlan_id': 101})
+changed: [localhost] => (item={u'ip_addr': u'172.160.12.10', u'default_gateway': u'172.160.12.1', u'hostname': u'cni1txausw3', u'secret': u'p@ssw0rd', u'snmp_ro_community': u'public', u'vlan_id': 102})
+changed: [localhost] => (item={u'ip_addr': u'172.160.13.10', u'default_gateway': u'172.160.13.1', u'hostname': u'cni1txausw4', u'secret': u'p@ssw0rd', u'snmp_ro_community': u'public', u'vlan_id': 103})
+changed: [localhost] => (item={u'ip_addr': u'172.160.14.10', u'default_gateway': u'172.160.14.1', u'hostname': u'cni1txausw5', u'secret': u'p@ssw0rd', u'snmp_ro_community': u'public', u'vlan_id': 104})
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=2    changed=1    unreachable=0    failed=0
+
+pmontero@akai:[py-ans-ex5-conf]$ pwd -P
+/Users/pmontero/ansible/py-ans-ex5-conf
+pmontero@akai:[py-ans-ex5-conf]$ ls -la
+total 40
+drwxr-xr-x  7 pmontero  staff  238 Feb 25 17:57 .
+drwxr-xr-x  3 pmontero  staff  102 Feb 25 17:25 ..
+-rw-r--r--  1 pmontero  staff  672 Feb 25 17:57 cni1txausw1.txt
+-rw-r--r--  1 pmontero  staff  672 Feb 25 17:57 cni1txausw2.txt
+-rw-r--r--  1 pmontero  staff  672 Feb 25 17:57 cni1txausw3.txt
+-rw-r--r--  1 pmontero  staff  672 Feb 25 17:57 cni1txausw4.txt
+-rw-r--r--  1 pmontero  staff  672 Feb 25 17:57 cni1txausw5.txt
+
+
+// Exercise 2
+
+Remove the configuration files:
+pmontero@akai:[py-ans-ex5-conf]$ ls -la
+total 48
+drwxr-xr-x  8 pmontero  staff   272 Feb 25 18:06 .
+drwxr-xr-x  4 pmontero  staff   136 Feb 25 18:05 ..
+-rw-r--r--  1 pmontero  staff  2395 Feb 25 18:05 class5_ex1_cni1txausw_configs.zip
+-rw-r--r--  1 pmontero  staff   668 Feb 25 18:03 cni1txausw1.txt
+-rw-r--r--  1 pmontero  staff   668 Feb 25 18:03 cni1txausw2.txt
+-rw-r--r--  1 pmontero  staff   668 Feb 25 18:03 cni1txausw3.txt
+-rw-r--r--  1 pmontero  staff   668 Feb 25 18:03 cni1txausw4.txt
+-rw-r--r--  1 pmontero  staff   668 Feb 25 18:03 cni1txausw5.txt
+pmontero@akai:[py-ans-ex5-conf]$ rm cn*.txt
+pmontero@akai:[py-ans-ex5-conf]$ ls -la
+total 8
+drwxr-xr-x  3 pmontero  staff   102 Feb 25 18:40 .
+drwxr-xr-x  4 pmontero  staff   136 Feb 25 18:05 ..
+-rw-r--r--  1 pmontero  staff  2395 Feb 25 18:05 class5_ex1_cni1txausw_configs.zip
+pmontero@akai:[py-ans-ex5-conf]$
+
+pmontero@akai:[ex2]$ ansible-playbook site.yml --check
+
+PLAY [Switch configuration file template.] *************************************
+
+TASK [setup] *******************************************************************
+ok: [localhost]
+
+TASK [switch : Generate switch configuration file] *****************************
+changed: [localhost] => (item={u'ip_addr': u'172.160.10.10', u'default_gateway': u'172.160.10.1', u'hostname': u'cni1txausw1', u'snmp_ro_community': u'public', u'secret': u'p@ssw0rd', u'snmp_v3': True, u'vlan_id': 100})
+changed: [localhost] => (item={u'ip_addr': u'172.160.11.10', u'default_gateway': u'172.160.11.1', u'hostname': u'cni1txausw2', u'snmp_ro_community': u'public', u'secret': u'p@ssw0rd', u'snmp_v3': False, u'vlan_id': 101})
+changed: [localhost] => (item={u'ip_addr': u'172.160.12.10', u'default_gateway': u'172.160.12.1', u'hostname': u'cni1txausw3', u'snmp_ro_community': u'public', u'secret': u'p@ssw0rd', u'snmp_v3': False, u'vlan_id': 102})
+changed: [localhost] => (item={u'ip_addr': u'172.160.13.10', u'default_gateway': u'172.160.13.1', u'hostname': u'cni1txausw4', u'snmp_ro_community': u'public', u'secret': u'p@ssw0rd', u'snmp_v3': False, u'vlan_id': 103})
+changed: [localhost] => (item={u'ip_addr': u'172.160.14.10', u'default_gateway': u'172.160.14.1', u'hostname': u'cni1txausw5', u'snmp_ro_community': u'public', u'secret': u'p@ssw0rd', u'snmp_v3': True, u'vlan_id': 104})
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=2    changed=1    unreachable=0    failed=0
+
+Applying changes:
+
+pmontero@akai:[ex2]$ ansible-playbook site.yml
+
+PLAY [Switch configuration file template.] *************************************
+
+TASK [setup] *******************************************************************
+ok: [localhost]
+
+TASK [switch : Generate switch configuration file] *****************************
+changed: [localhost] => (item={u'ip_addr': u'172.160.10.10', u'default_gateway': u'172.160.10.1', u'hostname': u'cni1txausw1', u'snmp_ro_community': u'public', u'secret': u'p@ssw0rd', u'snmp_v3': True, u'vlan_id': 100})
+changed: [localhost] => (item={u'ip_addr': u'172.160.11.10', u'default_gateway': u'172.160.11.1', u'hostname': u'cni1txausw2', u'snmp_ro_community': u'public', u'secret': u'p@ssw0rd', u'snmp_v3': False, u'vlan_id': 101})
+changed: [localhost] => (item={u'ip_addr': u'172.160.12.10', u'default_gateway': u'172.160.12.1', u'hostname': u'cni1txausw3', u'snmp_ro_community': u'public', u'secret': u'p@ssw0rd', u'snmp_v3': False, u'vlan_id': 102})
+changed: [localhost] => (item={u'ip_addr': u'172.160.13.10', u'default_gateway': u'172.160.13.1', u'hostname': u'cni1txausw4', u'snmp_ro_community': u'public', u'secret': u'p@ssw0rd', u'snmp_v3': False, u'vlan_id': 103})
+changed: [localhost] => (item={u'ip_addr': u'172.160.14.10', u'default_gateway': u'172.160.14.1', u'hostname': u'cni1txausw5', u'snmp_ro_community': u'public', u'secret': u'p@ssw0rd', u'snmp_v3': True, u'vlan_id': 104})
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=2    changed=1    unreachable=0    failed=0
+
+pmontero@akai:[py-ans-ex5-conf]$ ls -la cni*
+-rw-r--r--  1 pmontero  staff  937 Feb 25 18:41 cni1txausw1.txt
+-rw-r--r--  1 pmontero  staff  699 Feb 25 18:41 cni1txausw2.txt
+-rw-r--r--  1 pmontero  staff  699 Feb 25 18:41 cni1txausw3.txt
+-rw-r--r--  1 pmontero  staff  699 Feb 25 18:41 cni1txausw4.txt
+-rw-r--r--  1 pmontero  staff  937 Feb 25 18:41 cni1txausw5.txt
+
+Which files were added the SNMPv3 configuration:
+Only 1 and 5 per class5/ex2/roles/switch/vars/main.yml file.
+
+pmontero@akai:[py-ans-ex5-conf]$ grep access-list *
+cni1txausw1.txt:access-list 98 remark *** SNMP ***
+cni1txausw1.txt:access-list 98 permit any
+cni1txausw5.txt:access-list 98 remark *** SNMP ***
+cni1txausw5.txt:access-list 98 permit any
+
+// Exercise 3
+
+pmontero@akai:[py-ans-ex5-conf]$ rm cni*.txt
+pmontero@akai:[py-ans-ex5-conf]$ ls -la
+total 16
+drwxr-xr-x  4 pmontero  staff   136 Feb 25 18:54 .
+drwxr-xr-x  4 pmontero  staff   136 Feb 25 18:05 ..
+-rw-r--r--  1 pmontero  staff  2395 Feb 25 18:05 class5_ex1_cni1txausw_configs.zip
+-rw-r--r--  1 pmontero  staff  2741 Feb 25 18:46 class5_ex2_cni1txausw_configs.zip
+
+pmontero@akai:[ex3]$ ansible-playbook site.yml -C
+
+PLAY [Switch configuration file template.] *************************************
+
+TASK [setup] *******************************************************************
+ok: [localhost]
+
+TASK [switch : Generate switch configuration file] *****************************
+changed: [localhost] => (item={u'ip_addr': u'172.160.10.10', u'default_gateway': u'172.160.10.1', u'hostname': u'cni1txausw1', u'snmp_ro_community': u'public', u'secret': u'p@ssw0rd', u'snmp_v3': True, u'vlan_id': 100})
+changed: [localhost] => (item={u'ip_addr': u'172.160.11.10', u'default_gateway': u'172.160.11.1', u'hostname': u'cni1txausw2', u'snmp_ro_community': u'public', u'secret': u'p@ssw0rd', u'snmp_v3': False, u'vlan_id': 101})
+changed: [localhost] => (item={u'ip_addr': u'172.160.12.10', u'default_gateway': u'172.160.12.1', u'hostname': u'cni1txausw3', u'snmp_ro_community': u'public', u'secret': u'p@ssw0rd', u'snmp_v3': False, u'vlan_id': 102})
+changed: [localhost] => (item={u'ip_addr': u'172.160.13.10', u'default_gateway': u'172.160.13.1', u'hostname': u'cni1txausw4', u'snmp_ro_community': u'public', u'secret': u'p@ssw0rd', u'snmp_v3': False, u'vlan_id': 103})
+changed: [localhost] => (item={u'ip_addr': u'172.160.14.10', u'default_gateway': u'172.160.14.1', u'hostname': u'cni1txausw5', u'snmp_ro_community': u'public', u'secret': u'p@ssw0rd', u'snmp_v3': True, u'vlan_id': 104})
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=2    changed=1    unreachable=0    failed=0
+
+Applying changes:
+
+pmontero@akai:[ex3]$ ansible-playbook site.yml
+
+PLAY [Switch configuration file template.] *************************************
+
+TASK [setup] *******************************************************************
+ok: [localhost]
+
+TASK [switch : Generate switch configuration file] *****************************
+changed: [localhost] => (item={u'ip_addr': u'172.160.10.10', u'default_gateway': u'172.160.10.1', u'hostname': u'cni1txausw1', u'snmp_ro_community': u'public', u'secret': u'p@ssw0rd', u'snmp_v3': True, u'vlan_id': 100})
+changed: [localhost] => (item={u'ip_addr': u'172.160.11.10', u'default_gateway': u'172.160.11.1', u'hostname': u'cni1txausw2', u'snmp_ro_community': u'public', u'secret': u'p@ssw0rd', u'snmp_v3': False, u'vlan_id': 101})
+changed: [localhost] => (item={u'ip_addr': u'172.160.12.10', u'default_gateway': u'172.160.12.1', u'hostname': u'cni1txausw3', u'snmp_ro_community': u'public', u'secret': u'p@ssw0rd', u'snmp_v3': False, u'vlan_id': 102})
+changed: [localhost] => (item={u'ip_addr': u'172.160.13.10', u'default_gateway': u'172.160.13.1', u'hostname': u'cni1txausw4', u'snmp_ro_community': u'public', u'secret': u'p@ssw0rd', u'snmp_v3': False, u'vlan_id': 103})
+changed: [localhost] => (item={u'ip_addr': u'172.160.14.10', u'default_gateway': u'172.160.14.1', u'hostname': u'cni1txausw5', u'snmp_ro_community': u'public', u'secret': u'p@ssw0rd', u'snmp_v3': True, u'vlan_id': 104})
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=2    changed=1    unreachable=0    failed=0
+
+pmontero@akai:[py-ans-ex5-conf]$ ls -la
+total 56
+drwxr-xr-x  9 pmontero  staff   306 Feb 25 18:56 .
+drwxr-xr-x  4 pmontero  staff   136 Feb 25 18:05 ..
+-rw-r--r--  1 pmontero  staff  2395 Feb 25 18:05 class5_ex1_cni1txausw_configs.zip
+-rw-r--r--  1 pmontero  staff  2741 Feb 25 18:46 class5_ex2_cni1txausw_configs.zip
+-rw-r--r--  1 pmontero  staff  3242 Feb 25 18:56 cni1txausw1.txt
+-rw-r--r--  1 pmontero  staff  3004 Feb 25 18:56 cni1txausw2.txt
+-rw-r--r--  1 pmontero  staff  3004 Feb 25 18:56 cni1txausw3.txt
+-rw-r--r--  1 pmontero  staff  3004 Feb 25 18:56 cni1txausw4.txt
+-rw-r--r--  1 pmontero  staff  3242 Feb 25 18:56 cni1txausw5.txt
+
+pmontero@akai:[py-ans-ex5-conf]$ grep FastEthernet0/ *
+cni1txausw1.txt:interface FastEthernet0/1
+cni1txausw1.txt:interface FastEthernet0/2
+cni1txausw1.txt:interface FastEthernet0/3
+cni1txausw1.txt:interface FastEthernet0/4
+cni1txausw1.txt:interface FastEthernet0/5
+cni1txausw1.txt:interface FastEthernet0/6
+cni1txausw1.txt:interface FastEthernet0/7
+cni1txausw1.txt:interface FastEthernet0/8
+cni1txausw1.txt:interface FastEthernet0/9
+cni1txausw1.txt:interface FastEthernet0/10
+cni1txausw1.txt:interface FastEthernet0/11
+cni1txausw1.txt:interface FastEthernet0/12
+cni1txausw1.txt:interface FastEthernet0/13
+cni1txausw1.txt:interface FastEthernet0/14
+cni1txausw1.txt:interface FastEthernet0/15
+cni1txausw1.txt:interface FastEthernet0/16
+cni1txausw1.txt:interface FastEthernet0/17
+cni1txausw1.txt:interface FastEthernet0/18
+cni1txausw1.txt:interface FastEthernet0/19
+cni1txausw1.txt:interface FastEthernet0/20
+cni1txausw1.txt:interface FastEthernet0/21
+cni1txausw1.txt:interface FastEthernet0/22
+cni1txausw1.txt:interface FastEthernet0/23
+cni1txausw1.txt:interface FastEthernet0/24
+cni1txausw2.txt:interface FastEthernet0/1
+cni1txausw2.txt:interface FastEthernet0/2
+cni1txausw2.txt:interface FastEthernet0/3
+cni1txausw2.txt:interface FastEthernet0/4
+cni1txausw2.txt:interface FastEthernet0/5
+cni1txausw2.txt:interface FastEthernet0/6
+cni1txausw2.txt:interface FastEthernet0/7
+cni1txausw2.txt:interface FastEthernet0/8
+cni1txausw2.txt:interface FastEthernet0/9
+cni1txausw2.txt:interface FastEthernet0/10
+cni1txausw2.txt:interface FastEthernet0/11
+cni1txausw2.txt:interface FastEthernet0/12
+cni1txausw2.txt:interface FastEthernet0/13
+cni1txausw2.txt:interface FastEthernet0/14
+cni1txausw2.txt:interface FastEthernet0/15
+cni1txausw2.txt:interface FastEthernet0/16
+cni1txausw2.txt:interface FastEthernet0/17
+cni1txausw2.txt:interface FastEthernet0/18
+cni1txausw2.txt:interface FastEthernet0/19
+cni1txausw2.txt:interface FastEthernet0/20
+cni1txausw2.txt:interface FastEthernet0/21
+cni1txausw2.txt:interface FastEthernet0/22
+cni1txausw2.txt:interface FastEthernet0/23
+cni1txausw2.txt:interface FastEthernet0/24
+cni1txausw3.txt:interface FastEthernet0/1
+cni1txausw3.txt:interface FastEthernet0/2
+cni1txausw3.txt:interface FastEthernet0/3
+cni1txausw3.txt:interface FastEthernet0/4
+cni1txausw3.txt:interface FastEthernet0/5
+cni1txausw3.txt:interface FastEthernet0/6
+cni1txausw3.txt:interface FastEthernet0/7
+cni1txausw3.txt:interface FastEthernet0/8
+cni1txausw3.txt:interface FastEthernet0/9
+cni1txausw3.txt:interface FastEthernet0/10
+cni1txausw3.txt:interface FastEthernet0/11
+cni1txausw3.txt:interface FastEthernet0/12
+cni1txausw3.txt:interface FastEthernet0/13
+cni1txausw3.txt:interface FastEthernet0/14
+cni1txausw3.txt:interface FastEthernet0/15
+cni1txausw3.txt:interface FastEthernet0/16
+cni1txausw3.txt:interface FastEthernet0/17
+cni1txausw3.txt:interface FastEthernet0/18
+cni1txausw3.txt:interface FastEthernet0/19
+cni1txausw3.txt:interface FastEthernet0/20
+cni1txausw3.txt:interface FastEthernet0/21
+cni1txausw3.txt:interface FastEthernet0/22
+cni1txausw3.txt:interface FastEthernet0/23
+cni1txausw3.txt:interface FastEthernet0/24
+cni1txausw4.txt:interface FastEthernet0/1
+cni1txausw4.txt:interface FastEthernet0/2
+cni1txausw4.txt:interface FastEthernet0/3
+cni1txausw4.txt:interface FastEthernet0/4
+cni1txausw4.txt:interface FastEthernet0/5
+cni1txausw4.txt:interface FastEthernet0/6
+cni1txausw4.txt:interface FastEthernet0/7
+cni1txausw4.txt:interface FastEthernet0/8
+cni1txausw4.txt:interface FastEthernet0/9
+cni1txausw4.txt:interface FastEthernet0/10
+cni1txausw4.txt:interface FastEthernet0/11
+cni1txausw4.txt:interface FastEthernet0/12
+cni1txausw4.txt:interface FastEthernet0/13
+cni1txausw4.txt:interface FastEthernet0/14
+cni1txausw4.txt:interface FastEthernet0/15
+cni1txausw4.txt:interface FastEthernet0/16
+cni1txausw4.txt:interface FastEthernet0/17
+cni1txausw4.txt:interface FastEthernet0/18
+cni1txausw4.txt:interface FastEthernet0/19
+cni1txausw4.txt:interface FastEthernet0/20
+cni1txausw4.txt:interface FastEthernet0/21
+cni1txausw4.txt:interface FastEthernet0/22
+cni1txausw4.txt:interface FastEthernet0/23
+cni1txausw4.txt:interface FastEthernet0/24
+cni1txausw5.txt:interface FastEthernet0/1
+cni1txausw5.txt:interface FastEthernet0/2
+cni1txausw5.txt:interface FastEthernet0/3
+cni1txausw5.txt:interface FastEthernet0/4
+cni1txausw5.txt:interface FastEthernet0/5
+cni1txausw5.txt:interface FastEthernet0/6
+cni1txausw5.txt:interface FastEthernet0/7
+cni1txausw5.txt:interface FastEthernet0/8
+cni1txausw5.txt:interface FastEthernet0/9
+cni1txausw5.txt:interface FastEthernet0/10
+cni1txausw5.txt:interface FastEthernet0/11
+cni1txausw5.txt:interface FastEthernet0/12
+cni1txausw5.txt:interface FastEthernet0/13
+cni1txausw5.txt:interface FastEthernet0/14
+cni1txausw5.txt:interface FastEthernet0/15
+cni1txausw5.txt:interface FastEthernet0/16
+cni1txausw5.txt:interface FastEthernet0/17
+cni1txausw5.txt:interface FastEthernet0/18
+cni1txausw5.txt:interface FastEthernet0/19
+cni1txausw5.txt:interface FastEthernet0/20
+cni1txausw5.txt:interface FastEthernet0/21
+cni1txausw5.txt:interface FastEthernet0/22
+cni1txausw5.txt:interface FastEthernet0/23
+cni1txausw5.txt:interface FastEthernet0/24
+
+// end-results-file

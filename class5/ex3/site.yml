@@ -1,0 +1,20 @@
+---
+#
+# In the above access_switch.j2 template use a Jinja2 for loop to create all of the interfaces from FastEthernet 0/1 to FastEthernet 0/24.
+# Each of the interfaces should have the following configuration:
+# >>>>
+#  interface FastEthernet 0/X                    # where X is the interface number
+#   switchport access vlan
+#   switchport mode access
+#   spanning-tree portfast
+# >>>>
+#
+# Usage:
+# With check enabled: ansible-playbook site.yml --check
+# Commit: ansible-playbook site.yml
+
+- name: Switch configuration file template.
+  hosts: local
+
+  roles:
+    - switch

@@ -1,0 +1,14 @@
+---
+#
+# Create an Ansible playbook that generates five switch configurations based upon the below partial switch configuration.
+# The hostname, ip_addr, and default_gateway should be unique for each switch.
+#
+# Usage:
+# With check enabled: ansible-playbook site.yml --check
+# Commit: ansible-playbook site.yml
+
+- name: Switch configuration file template.
+  hosts: local
+
+  roles:
+    - switch
