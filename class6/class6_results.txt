@@ -19,10 +19,228 @@ Uptime:                 1 week, 1 day, 3 hours and 51 minutes
 Total memory:           3893916 kB
 Free memory:            1685960 kB
 
-pynet-sw3#
+pynet-sw3#show vlan
+VLAN  Name                             Status    Ports
+----- -------------------------------- --------- -------------------------------
+1     default                          active    Cpu, Et1, Et2, Et3, Et4, Et5
+                                                 Et6, Et7
 
 // Exercise 1
 
 v900-902, vlan_id: 900-902
+
+pmontero@ip-172-30-0-7:[ANSIBLE]$ ansible-playbook ex1.yml --check
+
+PLAY [EX1 Using Ansible to configure Arista vEOS.] *****************************
+
+TASK [setup] *******************************************************************
+ok: [pynet-sw3]
+
+TASK [Add three VLANs using Ansible] *******************************************
+changed: [pynet-sw3] => (item={u'vlan_name': u'v900', u'vlan_id': 900})
+changed: [pynet-sw3] => (item={u'vlan_name': u'v901', u'vlan_id': 901})
+changed: [pynet-sw3] => (item={u'vlan_name': u'v902', u'vlan_id': 902})
+
+PLAY RECAP *********************************************************************
+pynet-sw3                  : ok=2    changed=1    unreachable=0    failed=0
+
+Applying changes ::
+
+pmontero@ip-172-30-0-7:[ANSIBLE]$ ansible-playbook ex1.yml
+
+PLAY [EX1 Using Ansible to configure Arista vEOS.] *****************************
+
+TASK [setup] *******************************************************************
+ok: [pynet-sw3]
+
+TASK [Add three VLANs using Ansible] *******************************************
+changed: [pynet-sw3] => (item={u'vlan_name': u'v900', u'vlan_id': 900})
+changed: [pynet-sw3] => (item={u'vlan_name': u'v901', u'vlan_id': 901})
+changed: [pynet-sw3] => (item={u'vlan_name': u'v902', u'vlan_id': 902})
+
+PLAY RECAP *********************************************************************
+pynet-sw3                  : ok=2    changed=1    unreachable=0    failed=0
+
+pynet-sw3#show vlan
+VLAN  Name                             Status    Ports
+----- -------------------------------- --------- -------------------------------
+1     default                          active    Cpu, Et1, Et2, Et3, Et4, Et5
+                                                 Et6, Et7
+900   v900                             active
+901   v901                             active
+902   v902                             active
+
+// Exercise 2
+
+pmontero@ip-172-30-0-7:[ANSIBLE]$ ansible-playbook ex2.yml --check
+
+PLAY [EX2 Using Ansible to configure Arista vEOS.] *****************************
+
+TASK [setup] *******************************************************************
+ok: [pynet-sw3]
+
+TASK [Configure primary interface description (Et5)] ***************************
+changed: [pynet-sw3]
+
+TASK [Configure primary interface (Et5) switchport mode to access with vlan-id 900] ***
+changed: [pynet-sw3]
+
+PLAY RECAP *********************************************************************
+pynet-sw3                  : ok=3    changed=2    unreachable=0    failed=0
+
+Applying changes ::
+
+pmontero@ip-172-30-0-7:[ANSIBLE]$ ansible-playbook ex2.yml
+
+PLAY [EX2 Using Ansible to configure Arista vEOS.] *****************************
+
+TASK [setup] *******************************************************************
+ok: [pynet-sw3]
+
+TASK [Configure primary interface description (Et5)] ***************************
+changed: [pynet-sw3]
+
+TASK [Configure primary interface (Et5) switchport mode to access with vlan-id 900] ***
+changed: [pynet-sw3]
+
+PLAY RECAP *********************************************************************
+pynet-sw3                  : ok=3    changed=2    unreachable=0    failed=0
+
+pynet-sw3#show interfaces ethernet 5 description
+Interface                      Status         Protocol Description
+Et5                            up             up       *** IN USE ***
+pynet-sw3#show interfaces ethernet 5 switchport
+Name: Et5
+Switchport: Enabled
+Administrative Mode: static access
+Operational Mode: static access
+MAC Address Learning: enabled
+Access Mode VLAN: 900 (v900)
+Trunking Native Mode VLAN: 1 (default)
+Administrative Native VLAN tagging: disabled
+Administrative private VLAN mapping: ALL
+Trunking VLANs Enabled: ALL
+Static Trunk Groups:
+Dynamic Trunk Groups:
+
+// Exercise 3
+
+pmontero@ip-172-30-0-7:[ANSIBLE]$ ansible-playbook ex3.yml
+
+PLAY [EX3 Using Ansible to configure Arista vEOS.] *****************************
+
+TASK [setup] *******************************************************************
+ok: [pynet-sw3]
+
+TASK [Configure primary interface (Et5) switchport mode to TRUNK with vlan-id 900-902] ***
+changed: [pynet-sw3]
+
+PLAY RECAP *********************************************************************
+pynet-sw3                  : ok=2    changed=1    unreachable=0    failed=0
+
+pynet-sw3#show interfaces ethernet 5 switchport
+Name: Et5
+Switchport: Enabled
+Administrative Mode: trunk
+Operational Mode: trunk
+MAC Address Learning: enabled
+Access Mode VLAN: 900 (v900)
+Trunking Native Mode VLAN: 1 (default)
+Administrative Native VLAN tagging: disabled
+Administrative private VLAN mapping: ALL
+Trunking VLANs Enabled: 900-902
+Static Trunk Groups:
+Dynamic Trunk Groups:
+
+// Exercise 4
+
+pmontero@ip-172-30-0-7:[ANSIBLE]$ ansible-playbook ex4.yml --check
+
+PLAY [EX4 Using Ansible to configure Arista vEOS.] *****************************
+
+TASK [setup] *******************************************************************
+ok: [pynet-sw3]
+
+TASK [Configure primary interface description (Et5) to default] ****************
+ok: [pynet-sw3]
+
+TASK [Configure primary interface (Et5) switchport mode to ACCESS and default vlan-id 1] ***
+ok: [pynet-sw3]
+
+TASK [Delete VLANs created on exercise 1] **************************************
+changed: [pynet-sw3] => (item={u'vlan_name': u'v900', u'vlan_id': 900})
+changed: [pynet-sw3] => (item={u'vlan_name': u'v901', u'vlan_id': 901})
+changed: [pynet-sw3] => (item={u'vlan_name': u'v902', u'vlan_id': 902})
+
+PLAY RECAP *********************************************************************
+pynet-sw3                  : ok=4    changed=1    unreachable=0    failed=0
+
+pmontero@ip-172-30-0-7:[ANSIBLE]$ ansible-playbook ex4.yml
+
+PLAY [EX4 Using Ansible to configure Arista vEOS.] *****************************
+
+TASK [setup] *******************************************************************
+ok: [pynet-sw3]
+
+TASK [Configure primary interface description (Et5) to default] ****************
+ok: [pynet-sw3]
+
+TASK [Configure primary interface (Et5) switchport mode to ACCESS and default vlan-id 1] ***
+ok: [pynet-sw3]
+
+TASK [Delete VLANs created on exercise 1] **************************************
+changed: [pynet-sw3] => (item={u'vlan_name': u'v900', u'vlan_id': 900})
+changed: [pynet-sw3] => (item={u'vlan_name': u'v901', u'vlan_id': 901})
+changed: [pynet-sw3] => (item={u'vlan_name': u'v902', u'vlan_id': 902})
+
+PLAY RECAP *********************************************************************
+pynet-sw3                  : ok=4    changed=1    unreachable=0    failed=0
+
+pynet-sw3#show vlan
+VLAN  Name                             Status    Ports
+----- -------------------------------- --------- -------------------------------
+1     default                          active    Cpu, Et1, Et2, Et3, Et4, Et5
+                                                 Et6, Et7
+pynet-sw3#show interfaces ethernet 5 description
+Interface                      Status         Protocol Description
+Et5                            up             up
+
+pynet-sw3#show interfaces ethernet 5 switchport
+Name: Et5
+Switchport: Enabled
+Administrative Mode: static access
+Operational Mode: static access
+MAC Address Learning: enabled
+Access Mode VLAN: 1 (default)
+Trunking Native Mode VLAN: 1 (default)
+Administrative Native VLAN tagging: disabled
+Administrative private VLAN mapping: ALL
+Trunking VLANs Enabled: ALL
+Static Trunk Groups:
+Dynamic Trunk Groups:
+
+// Exercise 5
+
+File to transfer: file_to_transfer.cfg
+Save in pynet-rtr1 as: useless_file.cfg
+
+pmontero@ip-172-30-0-7:[ANSIBLE]$ ansible-playbook ex5.yml
+
+PLAY [EX5 Using cisco_file_transfer.py to transfer file to pynet-rtr1] *********
+
+TASK [File transfer to pynet-rtr1] *********************************************
+changed: [pynet-rtr1]
+
+PLAY RECAP *********************************************************************
+pynet-rtr1                 : ok=1    changed=1    unreachable=0    failed=0
+
+pynet-rtr1#dir | i useless
+   90  -rw-         134  Feb 25 2017 21:19:10 -08:00  useless_file.cfg
+pynet-rtr1#exit
+
+pmontero@ip-172-30-0-7:[ANSIBLE]$ cp ex* /home/pmontero/git/py-ans/class6
+pmontero@ip-172-30-0-7:[ANSIBLE]$ cp file_to_transfer.cfg /home/pmontero/git/py-ans/class6
+
+
 
 // end-results-file
