@@ -6,7 +6,7 @@
 # pmontero@ip-172-30-0-7:[ANSIBLE]$ ls -la *trans*
 # -rw-rw-r-- 1 pmontero pmontero 134 Feb 25 20:32 file_to_transfer.cfg
 
-- name: EX5: Using cisco_file_transfer.py to transfer file to pynet-rtr1
+- name: EX5 Using cisco_file_transfer.py to transfer file to pynet-rtr1
   hosts: pynet-rtr1
   gather_facts: False
 

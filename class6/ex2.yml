@@ -17,7 +17,7 @@
 # Et6                            up             up
 
 
-- name: EX2: Using Ansible to configure Arista vEOS.
+- name: EX2 Using Ansible to configure Arista vEOS.
   hosts: arista
 
   tasks:

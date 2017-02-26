@@ -10,7 +10,7 @@
 # /home/pmontero/ANSIBLE/library/eos_switchport.py
 
 
-- name: EX3: Using Ansible to configure Arista vEOS.
+- name: EX3 Using Ansible to configure Arista vEOS.
   hosts: arista
 
   tasks:

@@ -11,7 +11,7 @@
 # /home/pmontero/ANSIBLE/library/eos_interface.py
 # /home/pmontero/ANSIBLE/library/eos_switchport.py
 
-- name: EX4: Using Ansible to configure Arista vEOS.
+- name: EX4 Using Ansible to configure Arista vEOS.
   hosts: arista
 
   tasks:
@@ -33,7 +33,7 @@
             transport=https
 
     - name: Delete VLANs created on exercise 1
-      eos_vlan: name={{item.vlan_name}} vlanid={{item.vlanid}} state=absent username={{ eapi_username }} password={{ eapi_password }}
+      eos_vlan: name={{item.vlan_name}} vlanid={{item.vlan_id}} state=absent username={{ eapi_username }} password={{ eapi_password }}
             host={{ eapi_hostname }} port={{ eapi_port }} transport=https
       with_items:
         - {vlan_name: v900, vlan_id: 900}

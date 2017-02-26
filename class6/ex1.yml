@@ -5,12 +5,16 @@
 # This Ansible play-book use module: eos_vlan.py
 # /home/pmontero/ANSIBLE/library/eos_vlan.py
 
-- name: EX1: Using Ansible to configure Arista vEOS.
+- name: EX1 Using Ansible to configure Arista vEOS.
   hosts: arista
   tasks:
-    - name: Add 3 VLANs using Ansible (v900-v902)
-      eos_vlan: name={{ item.vlan_name }} vlanid={{ item.vlan_id }} username={{ eapi_username }}
-            password={{ eapi_password }} host={{ eapi_hostname }} port={{ eapi_port }} transport=https
+    - name: Add three VLANs using Ansible
+      eos_vlan: name={{ item.vlan_name }} vlanid={{ item.vlan_id }} 
+            username={{ eapi_username }}
+            password={{ eapi_password }} 
+            host={{ eapi_hostname }} 
+            port={{ eapi_port }} 
+            transport=https
       with_items:
         - {vlan_name: v900, vlan_id: 900}
         - {vlan_name: v901, vlan_id: 901}
