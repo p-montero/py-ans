@@ -1,0 +1,23 @@
+---
+# Use the cisco_file_transfer.py module to transfer a small file to the Cisco pynet-rtr1 router.
+# /home/pmontero/ANSIBLE/library/cisco_file_transfer.py
+
+# File to transfer: file_to_transfer.cfg
+# pmontero@ip-172-30-0-7:[ANSIBLE]$ ls -la *trans*
+# -rw-rw-r-- 1 pmontero pmontero 134 Feb 25 20:32 file_to_transfer.cfg
+
+- name: EX5: Using cisco_file_transfer.py to transfer file to pynet-rtr1
+  hosts: pynet-rtr1
+  gather_facts: False
+
+  tasks:
+  - name: File transfer to pynet-rtr1
+    cisco_file_transfer:
+      source_file="/home/pmontero/ANSIBLE/file_to_transfer.cfg"
+      dest_file=useless_file.cfg
+      overwrite=true
+      enable_scp=true
+      host={{ host }}
+      port={{ port }}
+      username={{ username }}
+      password={{ password }}

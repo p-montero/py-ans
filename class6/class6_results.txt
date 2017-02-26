@@ -1,0 +1,28 @@
+
+pynet-sw3#show running-config interfaces ethernet 5
+interface Ethernet5
+pynet-sw3#show running-config interfaces ethernet 6
+interface Ethernet6
+#
+pynet-sw3#show ver
+Arista vEOS
+Hardware version:
+Serial number:
+System MAC address:  5254.ab71.e119
+
+Software image version: 4.15.4F
+Architecture:           i386
+Internal build version: 4.15.4F-2923910.4154F
+Internal build ID:      d8a3c846-c735-4766-93cd-82bb7427da51
+
+Uptime:                 1 week, 1 day, 3 hours and 51 minutes
+Total memory:           3893916 kB
+Free memory:            1685960 kB
+
+pynet-sw3#
+
+// Exercise 1
+
+v900-902, vlan_id: 900-902
+
+// end-results-file

@@ -1,0 +1,41 @@
+---
+
+# Use Ansible to restore your 'primary Ethernet interface' back to the following state:
+# description:            <none>
+# switchport mode:        access
+# access VLAN:            1
+# trunk allowed VLANs:    all
+# Also use Ansible to remove the three VLANs that you configured.
+
+# This Ansible play-book use module: eos_interface.py, eos_switchport.py
+# /home/pmontero/ANSIBLE/library/eos_interface.py
+# /home/pmontero/ANSIBLE/library/eos_switchport.py
+
+- name: EX4: Using Ansible to configure Arista vEOS.
+  hosts: arista
+
+  tasks:
+
+    - name: Configure primary interface description (Et5) to default
+      eos_interface: name=Ethernet5 description=''
+            username={{ eapi_username }}
+            password={{ eapi_password }}
+            host={{ eapi_hostname }}
+            port={{ eapi_port }}
+            transport=https
+
+    - name: Configure primary interface (Et5) switchport mode to ACCESS and default vlan-id 1
+      eos_switchport: name=Ethernet5 mode=access access_vlan=1 trunk_allowed_vlans=1-4094
+            username={{ eapi_username }}
+            password={{ eapi_password }}
+            host={{ eapi_hostname }}
+            port={{ eapi_port }}
+            transport=https
+
+    - name: Delete VLANs created on exercise 1
+      eos_vlan: name={{item.vlan_name}} vlanid={{item.vlanid}} state=absent username={{ eapi_username }} password={{ eapi_password }}
+            host={{ eapi_hostname }} port={{ eapi_port }} transport=https
+      with_items:
+        - {vlan_name: v900, vlan_id: 900}
+        - {vlan_name: v901, vlan_id: 901}
+        - {vlan_name: v902, vlan_id: 902}

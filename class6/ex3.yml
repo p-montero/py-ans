@@ -1,0 +1,23 @@
+---
+
+# Use Ansible to configure your 'primary Ethernet interface' as follows:
+# switchport mode:        trunk
+# trunk native VLAN:      VLAN1
+# trunk allowed VLANs:    <the three VLANs created in exercise1>
+
+# This Ansible play-book use module: eos_interface.py, eos_switchport.py
+# /home/pmontero/ANSIBLE/library/eos_interface.py
+# /home/pmontero/ANSIBLE/library/eos_switchport.py
+
+
+- name: EX3: Using Ansible to configure Arista vEOS.
+  hosts: arista
+
+  tasks:
+    - name: Configure primary interface (Et5) switchport mode to TRUNK with vlan-id 900-902
+      eos_switchport: name=Ethernet5 mode=trunk trunk_allowed_vlans=900,901,902 trunk_native_vlan=1
+            username={{ eapi_username }}
+            password={{ eapi_password }}
+            host={{ eapi_hostname }}
+            port={{ eapi_port }}
+            transport=https
