@@ -30,10 +30,11 @@ def if_vlan(node, vlan_id):
     # try: if vlan exist, referenced from kbyers lecture/exercise
     try:
         response = node.enable(cli_show_vlan_id)
-        if_vlan = pyeapi_output(response)['vlans']
-        return if_vlan[vlan_id]['name']
+        if_vlan_id = pyeapi_output(response)['vlans']
+        return if_vlan_id[vlan_id]['name']
     except (pyeapi.eapilib.CommandError, KeyError):
         pass
+        
     return False
 
 # Add vlan-id tag in the device, define default name to Unknown if not passed as an argument
