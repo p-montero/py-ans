@@ -30,11 +30,11 @@ def if_vlan(node, vlan_id):
     # try: if vlan exist, referenced from kbyers lecture/exercise
     try:
         response = node.enable(cli_show_vlan_id)
-        if_vlan_id = pyeapi_output(response)['vlans']
-        return if_vlan_id[vlan_id]['name']
+        if_vlan_result = pyeapi_output(response)['vlans']
+        return if_vlan_result[vlan_id]['name']
     except (pyeapi.eapilib.CommandError, KeyError):
         pass
-        
+
     return False
 
 # Add vlan-id tag in the device, define default name to Unknown if not passed as an argument
@@ -77,7 +77,7 @@ def main():
 
     # check if action is remove or add
     if remove:
-        if if_vlan:
+        if if_vlan_result:
             print "Removing the configured VLAN id tag:" +colored(vlan_id, 'red') + " in the node"
             cli_remove_vlan_id = 'no vlan {}'.format(vlan_id)
             node.config([cli_remove_vlan_id])
@@ -85,7 +85,7 @@ def main():
             print "VLAN id tag:" +colored(vlan_id, 'red') + " IS NOT CONFIGURED in the node"
             print "Remove action: FAILED"
     else:
-        if if_vlan:
+        if if_vlan_result:
             if vlan_name is not None and if_vlan != vlan_name:
                 print "VLAN id tag:" +colored(vlan_id, 'yellow') + " found in the node and requiring VLAN id name update"
                 add_vlan(node, vlan_id, vlan_name)
