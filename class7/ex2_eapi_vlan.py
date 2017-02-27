@@ -41,7 +41,7 @@ def if_vlan(node, vlan_id):
 def add_vlan(node, vlan_id, vlan_name=None):
     cli_create_vlan = 'vlan {}'.format(vlan_id)
     cmd_create_vlan = [cli_create_vlan]
-    if vlan_name is not Unknown:
+    if vlan_name is not None:
         cmd_create_vlan_name = 'name {}'.format(vlan_name)
         cmd_create_vlan.append(cmd_create_vlan_name)
     return node.config(cmd_create_vlan)
