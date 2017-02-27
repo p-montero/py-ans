@@ -38,7 +38,7 @@ def if_vlan(node, vlan_id):
 
 # Add vlan-id tag in the device, define default name to Unknown if not passed as an argument
 # if vlan-id passed as an argument used for the vlan_name
-def add_vlan(node, vlan_id, vlan_name=Unknown):
+def add_vlan(node, vlan_id, vlan_name=None):
     cli_create_vlan = 'vlan {}'.format(vlan_id)
     cmd_create_vlan = [cli_create_vlan]
     if vlan_name is not Unknown:
@@ -85,7 +85,7 @@ def main():
             print "Remove action: FAILED"
     else:
         if if_vlan:
-            if vlan_name is not Unknown and if_vlan != vlan_name:
+            if vlan_name is not None and if_vlan != vlan_name:
                 print "VLAN id tag:" +colored(vlan_id, 'yellow') + " found in the node and requiring VLAN id name update"
                 add_vlan(node, vlan_id, vlan_name)
             else:
