@@ -86,7 +86,7 @@ def main():
             print "Remove action: FAILED"
     else:
         if if_vlan_result:
-            if vlan_name is not None and if_vlan != vlan_name:
+            if vlan_name is not None and if_vlan_result != vlan_name:
                 print "VLAN id tag:" +colored(vlan_id, 'yellow') + " found in the node and requiring VLAN id name update"
                 add_vlan(node, vlan_id, vlan_name)
             else:
