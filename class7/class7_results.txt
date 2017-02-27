@@ -1,0 +1,231 @@
+
+pynet-sw3#show interfaces | i packets input|packets output
+     630520 packets input, 90253745 bytes
+     59837 packets output, 17867940 bytes
+     663926 packets input, 103545786 bytes
+     25736 packets output, 4517364 bytes
+     661287 packets input, 103220403 bytes
+     28370 packets output, 4842137 bytes
+     661031 packets input, 103190758 bytes
+     28621 packets output, 4871291 bytes
+     664591 packets input, 103596200 bytes
+     25764 packets output, 4525249 bytes
+     663857 packets input, 103551908 bytes
+     25801 packets output, 4510755 bytes
+     663913 packets input, 103558650 bytes
+     25754 packets output, 4504974 bytes
+     0 packets input, 0 bytes
+     0 packets output, 0 bytes
+
+// Exercise 1
+
+>>> node
+Node(connection=EapiConnection(transport=https://184.105.247.74:443//command-api))
+
+>>> dir(node)
+['__class__', '__delattr__', '__dict__', '__doc__', '__format__', '__getattribute__', '__hash__', '__init__', '__module__', '__new__', '__reduce__',
+'__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_connection', '_enablepwd', '_running_config',
+'_startup_config', 'api', 'autorefresh', 'config', 'connection', 'enable', 'enable_authentication', 'get_config', 'refresh', 'run_commands',
+'running_config', 'section', 'settings', 'startup_config']
+
+>>> pp(intf)
+{u'Ethernet1': {u'autoNegotiate': u'unknown',
+                u'bandwidth': 0,
+                u'burnedInAddress': u'52:54:ab:03:a1:11',
+                u'description': u'',
+                u'duplex': u'duplexFull',
+                u'forwardingModel': u'bridged',
+                u'hardware': u'ethernet',
+                u'interfaceAddress': [],
+                u'interfaceCounters': {u'counterRefreshTime': 1488155882.918715,
+                                       u'inBroadcastPkts': 21375,
+                                       u'inDiscards': 0,
+                                       u'inMulticastPkts': 571453,
+                                       u'inOctets': 91353547,
+                                       u'inUcastPkts': 45403,
+                                       u'inputErrorsDetail': {u'alignmentErrors': 0,
+                                                              u'fcsErrors': 0,
+                                                              u'giantFrames': 0,
+                                                              u'runtFrames': 0,
+                                                              u'rxPause': 0,
+                                                              u'symbolErrors': 0},
+                                       u'linkStatusChanges': 1,
+                                       u'outBroadcastPkts': 1,
+                                       u'outDiscards': 0,
+                                       u'outMulticastPkts': 26184,
+                                       u'outOctets': 17971960,
+                                       u'outUcastPkts': 34485,
+                                       u'outputErrorsDetail': {u'collisions': 0,
+                                                               u'deferredTransmissions': 0,
+                                                               u'lateCollisions': 0,
+                                                               u'txPause': 0},
+                                       u'totalInErrors': 0,
+                                       u'totalOutErrors': 0},
+                u'interfaceStatistics': {u'inBitsRate': 0.0,
+                                         u'inPktsRate': 0.0,
+                                         u'outBitsRate': 0.0,
+                                         u'outPktsRate': 0.0,
+                                         u'updateInterval': 300.0},
+                u'interfaceStatus': u'connected',
+                u'lastStatusChangeTimestamp': 1487375058.7817302,
+                u'lineProtocolStatus': u'up',
+                u'loopbackMode': u'loopbackNone',
+                u'mtu': 9214,
+                u'name': u'Ethernet1',
+                u'physicalAddress': u'52:54:ab:03:a1:11'},
+ u'Ethernet2': {u'autoNegotiate': u'unknown',
+                u'bandwidth': 0,
+
+Output:
+
+pmontero@ip-172-30-0-7:[class7]$ ./ex1.py
+
+ -Interface- 	 -inOctects- 	 -outOctets-
+
+Management1	0	0
+Ethernet2	105685294	4617464
+Ethernet3	105360029	4942237
+Ethernet1	92280901	18080274
+Ethernet6	105691534	4610855
+Ethernet7	105697900	4605074
+Ethernet4	105330314	4971391
+Ethernet5	105735826	4625349
+Vlan1	None	None
+pmontero@ip-172-30-0-7:[class7]$
+
+// Exercise 2
+
+Default vlan database:
+pynet-sw3#show vlan
+VLAN  Name                             Status    Ports
+----- -------------------------------- --------- -------------------------------
+1     default                          active    Cpu, Et1, Et2, Et3, Et4, Et5
+                                                 Et6, Et7
+
+pmontero@ip-172-30-0-7:[class7]$ ./ex2_eapi_vlan.py
+usage: ex2_eapi_vlan.py [-h] [--name VLAN_NAME] [--remove] vlan_id
+ex2_eapi_vlan.py: error: too few arguments
+
+Per exercise verify the lines below:
+
+> Use VLAN IDs between 100 and 999.  You should be able to call the script from the command line as follows:
+   python eapi_vlan.py --name blue 100     # add VLAN100, name blue
+> If you call the script with the --remove option, the VLAN will be removed.
+   python eapi_vlan.py --remove 100          # remove VLAN100
+
+
+-- ADDING VLAN TAGS ---
+
+|| Attempting to a add new VLAN
+
+> Before running .py
+pynet-sw3#show vlan
+VLAN  Name                             Status    Ports
+----- -------------------------------- --------- -------------------------------
+1     default                          active    Cpu, Et1, Et2, Et3, Et4, Et5
+                                                 Et6, Et7
+
+pmontero@ip-172-30-0-7:[class7]$ ./ex2_eapi_vlan.py --name CUSTOMER1 222
+VLAN id tag:222 being added into the node ...
+pmontero@ip-172-30-0-7:[class7]$ ./ex2_eapi_vlan.py --name BLUE 100
+VLAN id tag:100 being added into the node ...
+
+> After running .py
+pynet-sw3#show vlan
+VLAN  Name                             Status    Ports
+----- -------------------------------- --------- -------------------------------
+1     default                          active    Cpu, Et1, Et2, Et3, Et4, Et5
+                                                 Et6, Et7
+100   BLUE                             active
+222   CUSTOMER1                        active
+
+|| Attempting to a add already configured VLAN on the device
+
+pmontero@ip-172-30-0-7:[class7]$ ./ex2_eapi_vlan.py --name BLUE 100
+VLAN id tag:100 IS CONFIGURED in the node
+ADD_VLAN action: FAILED
+pmontero@ip-172-30-0-7:[class7]$ ./ex2_eapi_vlan.py --name CUSTOMER1 222
+VLAN id tag:222IS CONFIGURED in the node
+ADD_VLAN action: FAILED
+
+|| Attempting to a add already configured VLAN on the device with different NAME.
+
+> Before running .py
+pynet-sw3#show vlan
+VLAN  Name                             Status    Ports
+----- -------------------------------- --------- -------------------------------
+1     default                          active    Cpu, Et1, Et2, Et3, Et4, Et5
+                                                 Et6, Et7
+100   BLUE                             active
+222   CUSTOMER1                        active
+
+pmontero@ip-172-30-0-7:[class7]$ ./ex2_eapi_vlan.py --name RED 100
+VLAN id tag:100 found in the node and requiring VLAN id name update
+pmontero@ip-172-30-0-7:[class7]$ ./ex2_eapi_vlan.py --name GREEN 222
+VLAN id tag:222 found in the node and requiring VLAN id name update
+
+pynet-sw3#show vlan
+VLAN  Name                             Status    Ports
+----- -------------------------------- --------- -------------------------------
+1     default                          active    Cpu, Et1, Et2, Et3, Et4, Et5
+                                                 Et6, Et7
+100   RED                              active
+222   GREEN                            active
+
+-- REMOVING VLAN TAGS ---
+
+|| Attempting to remove existing VLAN in the device.
+
+> Before running .py
+pynet-sw3#show vlan
+VLAN  Name                             Status    Ports
+----- -------------------------------- --------- -------------------------------
+1     default                          active    Cpu, Et1, Et2, Et3, Et4, Et5
+                                                 Et6, Et7
+100   BLUE                             active
+222   CUSTOMER1                        active
+
+pmontero@ip-172-30-0-7:[class7]$ ./ex2_eapi_vlan.py --remove 100
+Removing the configured VLAN id tag:100 in the node
+pmontero@ip-172-30-0-7:[class7]$ ./ex2_eapi_vlan.py --remove 222
+Removing the configured VLAN id tag:222 in the node
+
+> After running .py
+pynet-sw3#show vlan
+VLAN  Name                             Status    Ports
+----- -------------------------------- --------- -------------------------------
+1     default                          active    Cpu, Et1, Et2, Et3, Et4, Et5
+                                                 Et6, Et7
+
+|| Attempting to remove existing VLAN in the device.
+
+> Before running .py
+pynet-sw3#show vlan
+VLAN  Name                             Status    Ports
+----- -------------------------------- --------- -------------------------------
+1     default                          active    Cpu, Et1, Et2, Et3, Et4, Et5
+                                                 Et6, Et7
+100   RED                              active
+222   GREEN                            active
+
+pmontero@ip-172-30-0-7:[class7]$ ./ex2_eapi_vlan.py --remove 110
+VLAN id tag:110 IS NOT CONFIGURED in the node
+Remove action: FAILED
+pmontero@ip-172-30-0-7:[class7]$ ./ex2_eapi_vlan.py --remove 210
+VLAN id tag:210 IS NOT CONFIGURED in the node
+Remove action: FAILED
+pmontero@ip-172-30-0-7:[class7]$ ./ex2_eapi_vlan.py --remove 100
+Removing the configured VLAN id tag:100 in the node
+pmontero@ip-172-30-0-7:[class7]$ ./ex2_eapi_vlan.py --remove 222
+Removing the configured VLAN id tag:222 in the node
+pmontero@ip-172-30-0-7:[class7]$
+
+> After running .py
+
+pynet-sw3#show vlan
+VLAN  Name                             Status    Ports
+----- -------------------------------- --------- -------------------------------
+1     default                          active    Cpu, Et1, Et2, Et3, Et4, Et5
+                                                 Et6, Et7
+
+// end-results-file

@@ -90,7 +90,7 @@ def main():
                 print "VLAN id tag:" +colored(vlan_id, 'yellow') + " found in the node and requiring VLAN id name update"
                 add_vlan(node, vlan_id, vlan_name)
             else:
-                print "VLAN id tag:" +colored(vlan_id, 'green') + "IS CONFIGURED in the node"
+                print "VLAN id tag:" +colored(vlan_id, 'green') + " IS CONFIGURED in the node"
                 print "ADD_VLAN action: FAILED"
         else:
             print "VLAN id tag:" +colored(vlan_id, 'green') + " being added into the node ..."
