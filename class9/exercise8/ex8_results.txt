@@ -1,0 +1,17 @@
+pmontero@akai:[exercise8]$ p2
+Python 2.7.12 (default, Oct 11 2016, 05:24:00)
+[GCC 4.2.1 Compatible Apple LLVM 8.0.0 (clang-800.0.38)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>> from mytest import *
+>>> dir()
+['MyChildClass', 'MyClass', '__builtins__', '__doc__', '__name__', '__package__', 'func1', 'func2', 'func3']
+>>> func1()
+Print statement function 1 - simple
+>>> func2()
+Print statement function 2 - whatever
+>>> func3()
+Print statement function 3 - world
+>>> my_example = MyClass('Derek', 'Jeter', '1972-10-29')
+>>> my_example.hello()
+Variables in BLUE: Derek, Jeter, 1972-10-29
+>>>

@@ -1,0 +1,20 @@
+
+pmontero@akai:[exercise9]$ export PYTHONPATH=/Users/pmontero/WORK/eLearning/AUT_SDN_NFV_VIR/Python/PyNet/Python+Ansible/py-ans/class9/exercise8
+pmontero@akai:[exercise9]$ echo $PYTHONPATH
+/Users/pmontero/WORK/eLearning/AUT_SDN_NFV_VIR/Python/PyNet/Python+Ansible/py-ans/class9/exercise8
+
+pmontero@akai:[exercise9]$ ./ex9.py
+
+ Invoking function defined by func1 |  Print statement function 1 - simple
+
+ Invoking function defined by func2 |  Print statement function 2 - whatever
+
+ Invoking function defined by func3 |  Print statement function 3 - world
+
+ Invoking class defined by MyClass |
+
+Variables in BLUE: Derek, Jeter, 1972-10-29
+
+Variables in GREEN: Derek, Jeter, 1972-10-29
+end of class 9
+pmontero@akai:[exercise9]$

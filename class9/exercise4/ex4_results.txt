@@ -1,0 +1,33 @@
+
+pmontero@akai:[exercise4]$ ls -la
+total 8
+drwxr-xr-x   4 pmontero  staff  136 Feb 27 22:59 .
+drwxr-xr-x  12 pmontero  staff  408 Feb 27 22:42 ..
+-rw-r--r--   1 pmontero  staff  869 Feb 27 22:59 ex4_results.txt
+drwxr-xr-x   6 pmontero  staff  204 Nov 16 06:22 mytest
+$
+pmontero@akai:[exercise4]$ ls -la ./mytest/
+total 32
+drwxr-xr-x  6 pmontero  staff  204 Nov 16 06:22 .
+drwxr-xr-x  4 pmontero  staff  136 Feb 27 22:59 ..
+-rw-r--r--  1 pmontero  staff  136 Feb 27 22:17 __init__.py
+-rw-r--r--  1 pmontero  staff  251 Feb 27 22:17 simple.py
+-rw-r--r--  1 pmontero  staff  255 Feb 27 22:18 whatever.py
+-rw-r--r--  1 pmontero  staff  866 Feb 27 22:58 world.py
+
+# p2 is an alias for executing Python2
+
+pmontero@akai:[exercise4]$ p2
+Python 2.7.12 (default, Oct 11 2016, 05:24:00)
+[GCC 4.2.1 Compatible Apple LLVM 8.0.0 (clang-800.0.38)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>> from mytest.world import MyClass
+>>> dir()
+['MyClass', '__builtins__', '__doc__', '__name__', '__package__']
+>>> my_example = MyClass('Derek', 'Jeter', '1972-10-29')
+>>> my_example.hello()
+Variables in BLUE: Derek, Jeter, 1972-10-29
+>>> my_example.not_hello()
+Variables in GREEN: Derek, Jeter, 1972-10-29
+
+# Too see color you have to run the example script.

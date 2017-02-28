@@ -1,0 +1,26 @@
+
+pmontero@akai:[exercise3]$ cd mytest/
+pmontero@akai:[mytest]$ ls -la
+total 32
+drwxr-xr-x  6 pmontero  staff  204 Nov 16 06:22 .
+drwxr-xr-x  4 pmontero  staff  136 Feb 27 21:58 ..
+-rw-r--r--  1 pmontero  staff   97 Feb 27 21:56 __init__.py
+-rw-r--r--  1 pmontero  staff  251 Feb 27 21:55 simple.py
+-rw-r--r--  1 pmontero  staff  255 Feb 27 21:55 whatever.py
+-rw-r--r--  1 pmontero  staff  249 Feb 27 21:55 world.py
+pmontero@akai:[mytest]$
+
+# p2 is an alias for executing Python2
+
+pmontero@akai:[exercise3]$ p2
+Python 2.7.12 (default, Oct 11 2016, 05:24:00)
+[GCC 4.2.1 Compatible Apple LLVM 8.0.0 (clang-800.0.38)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>> from mytest import *
+>>> func1()
+Print statement function 1 - simple
+>>> func2()
+Print statement function 2 - whatever
+>>> func3()
+Print statement function 3 - world
+>>>
