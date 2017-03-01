@@ -1,0 +1,940 @@
+
+Reference django_notes_reference_kbyers
+
+// Exercise 1
+DJANGO database initialization ::
+
+he models.py file that is installed in the lab environment already contains both the NetworkDevice and Credentials definitions. Consequently, you only need to execute the following once:
+
+$ python manage.py makemigrations net_system
+$ python manage.py migrate
+
+pmontero@ip-172-30-0-7:[djproject]$ pwd -P
+/home/pmontero/DJANGOX/djproject
+
+pmontero@ip-172-30-0-7:[djproject]$ python manage.py makemigrations net_system
+Migrations for 'net_system':
+  0001_initial.py:
+    - Create model Credentials
+    - Create model NetworkDevice
+
+    pmontero@ip-172-30-0-7:[djproject]$ python manage.py migrate
+    Operations to perform:
+      Synchronize unmigrated apps: staticfiles, messages
+      Apply all migrations: admin, contenttypes, net_system, auth, sessions
+    Synchronizing apps without migrations:
+      Creating tables...
+        Running deferred SQL...
+      Installing custom SQL...
+    Running migrations:
+      Rendering model states... DONE
+      Applying contenttypes.0001_initial... OK
+      Applying auth.0001_initial... OK
+      Applying admin.0001_initial... OK
+      Applying contenttypes.0002_remove_content_type_name... OK
+      Applying auth.0002_alter_permission_name_max_length... OK
+      Applying auth.0003_alter_user_email_max_length... OK
+      Applying auth.0004_alter_user_username_opts... OK
+      Applying auth.0005_alter_user_last_login_null... OK
+      Applying auth.0006_require_contenttypes_0002... OK
+      Applying net_system.0001_initial... OK
+      Applying sessions.0001_initial... OK
+
+Loading credentials and devices already provided in:
+
+pmontero@ip-172-30-0-7:[net_system]$ ls -la load*
+-rw-r--r-- 1 pmontero pmontero  481 Oct  5 12:52 load_credentials.py
+-rw-r--r-- 1 pmontero pmontero 1523 Oct  5 12:52 load_devices.py
+
+Loading for the first time:
+pmontero@ip-172-30-0-7:[net_system]$ python load_credentials.py
+(<Credentials: pyclass>, True)
+(<Credentials: admin1>, True)
+pmontero@ip-172-30-0-7:[net_system]$ python load_devices.py
+(<NetworkDevice: pynet-rtr2>, True)
+(<NetworkDevice: pynet-sw1>, True)
+(<NetworkDevice: pynet-sw2>, True)
+(<NetworkDevice: pynet-sw3>, True)
+(<NetworkDevice: pynet-sw4>, True)
+(<NetworkDevice: juniper-srx>, True)
+pmontero@ip-172-30-0-7:[net_system]$
+
+Trying second time to see the false:
+pmontero@ip-172-30-0-7:[net_system]$ python load_devices.py
+(<NetworkDevice: pynet-rtr2>, False)
+(<NetworkDevice: pynet-sw1>, False)
+(<NetworkDevice: pynet-sw2>, False)
+(<NetworkDevice: pynet-sw3>, False)
+(<NetworkDevice: pynet-sw4>, False)
+(<NetworkDevice: juniper-srx>, False)
+
+pmontero@ip-172-30-0-7:[djproject]$ pwd -P
+/home/pmontero/DJANGOX/djproject
+pmontero@ip-172-30-0-7:[djproject]$ python manage.py shell
+Python 2.7.12 (default, Sep  1 2016, 22:14:00)
+[GCC 4.8.3 20140911 (Red Hat 4.8.3-9)] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+>>> from net_system.models import NetworkDevice, Credentials
+>>> net_devices = NetworkDevice.objects.all()
+>>> net_devices
+[<NetworkDevice: pynet-rtr1>, <NetworkDevice: pynet-rtr2>, <NetworkDevice: pynet-sw1>, <NetworkDevice: pynet-sw2>, <NetworkDevice: pynet-sw3>, <NetworkDevice: pynet-sw4>, <NetworkDevice: juniper-srx>]
+>>>
+>>> creds = Credentials.objects.all()
+>>> creds
+[<Credentials: pyclass>, <Credentials: admin1>]
+>>>
+
+/// Exercise 1b
+ Update the NetworkDevice objects such that each NetworkDevice links to the correct Credentials using Python interpreter.
+
+ pmontero@ip-172-30-0-7:[djproject]$ pwd -P
+ /home/pmontero/DJANGOX/djproject
+ pmontero@ip-172-30-0-7:[djproject]$ python manage.py shell
+ Python 2.7.12 (default, Sep  1 2016, 22:23:12)
+ [GCC 4.8.3 20140911 (Red Hat 4.8.3-9)] on linux2
+ Type "help", "copyright", "credits" or "license" for more information.
+ (InteractiveConsole)
+ >>> from net_system.models import NetworkDevice, Credentials
+ >>> from termcolor import colored
+ >>> pylab_devices = NetworkDevice.objects.all()
+ >>> creds = Credentials.objects.all()
+
+>>> other_creds = creds[0]
+>>> arista_creds = creds[1]
+>>> print other_creds
+pyclass
+>>> print arista_creds
+admin1
+>>> other_creds
+<Credentials: pyclass>
+>>> arista_creds
+<Credentials: admin1>
+>>>
+>>> for a_device in pylab_devices:
+...  if 'arista' in a_device.device_type:
+...   a_device.credentials = arista_creds
+...  else:
+...   a_device.credentials = other_creds
+...  a_device.save()
+...
+>>>
+>>> for a_device in pylab_devices:
+...  print "-- " + colored(a_device, 'blue') + " : " + colored(a_device.credentials, 'green')
+...
+-- pynet-rtr1 : pyclass
+-- pynet-rtr2 : pyclass
+-- pynet-sw1 : admin1
+-- pynet-sw2 : admin1
+-- pynet-sw3 : admin1
+-- pynet-sw4 : admin1
+-- juniper-srx : pyclass
+>>>
+
+// Exercise 2
+
+How to identify the vendor? Use device_type
+
+pmontero@ip-172-30-0-7:[net_system]$ cat load_devices.py | grep device_type
+models.py:    device_type     = models.CharField(max_length=50)
+load_devices.py:        device_type='cisco_ios',
+load_devices.py:        device_type='cisco_ios',
+load_devices.py:        device_type='arista_eos',
+load_devices.py:        device_type='arista_eos',
+load_devices.py:        device_type='arista_eos',
+load_devices.py:        device_type='arista_eos',
+load_devices.py:        device_type='juniper',
+Binary file migrations/0001_initial.pyc matches
+migrations/0001_initial.py:                ('device_type', models.CharField(max_length=50)),
+Binary file models.pyc matches
+
+pmontero@ip-172-30-0-7:[test]$ ./ex2.py
+-- pynet-rtr1 : Cisco Systems
+-- pynet-rtr2 : Cisco Systems
+-- pynet-sw1 : Arista Networks
+-- pynet-sw2 : Arista Networks
+-- pynet-sw3 : Arista Networks
+-- pynet-sw4 : Arista Networks
+-- juniper-srx : Juniper Networks
+
+// Exercise 3
+
+[Notice for simplicity we haven't use Exception Handling in ex4.py module to handle the error]
+
+pmontero@ip-172-30-0-7:[test]$ ./ex3.py
+
+ NEW added devices to the database ...
+
+-- pynet-rtr3 : nokia_timos
+-- pynet-rtr4 : nokia_timos
+
+pmontero@ip-172-30-0-7:[test]$
+
+// Exercise 4
+
+pmontero@ip-172-30-0-7:[test]$ ./ex3.py
+
+ NEW added devices to the database ...
+
+-- pynet-rtr3 : nokia_timos
+
+-- pynet-rtr4 : nokia_timos
+
+pmontero@ip-172-30-0-7:[test]$ ./ex4.py
+
+ Are [pynet_rtr3] and [pynet_rtr4] devices still in the database ...
+
+ [pynet_rtr3] and [pynet_rtr4] were effectively delete from the database
+pmontero@ip-172-30-0-7:[test]$ ./ex4.py
+Traceback (most recent call last):
+  File "./ex4.py", line 31, in <module>
+    main()
+  File "./ex4.py", line 15, in main
+    pynet_rtr3 = NetworkDevice.objects.get(device_name='pynet-rtr3')
+  File "/home/pmontero/applied_python/local/lib/python2.7/site-packages/django/db/models/manager.py", line 127, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/pmontero/applied_python/local/lib/python2.7/site-packages/django/db/models/query.py", line 334, in get
+    self.model._meta.object_name
+net_system.models.DoesNotExist: NetworkDevice matching query does not exist.
+pmontero@ip-172-30-0-7:[test]$ ./ex3.py
+
+ NEW added devices to the database ...
+
+-- pynet-rtr3 : nokia_timos
+
+-- pynet-rtr4 : nokia_timos
+
+pmontero@ip-172-30-0-7:[test]$ ./ex4.py
+
+ Are [pynet_rtr3] and [pynet_rtr4] devices still in the database ...
+
+ [pynet_rtr3] and [pynet_rtr4] were effectively delete from the database
+pmontero@ip-172-30-0-7:[test]$ ./ex4.py
+Traceback (most recent call last):
+  File "./ex4.py", line 31, in <module>
+    main()
+  File "./ex4.py", line 15, in main
+    pynet_rtr3 = NetworkDevice.objects.get(device_name='pynet-rtr3')
+  File "/home/pmontero/applied_python/local/lib/python2.7/site-packages/django/db/models/manager.py", line 127, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/home/pmontero/applied_python/local/lib/python2.7/site-packages/django/db/models/query.py", line 334, in get
+    self.model._meta.object_name
+net_system.models.DoesNotExist: NetworkDevice matching query does not exist.
+
+[Using Exception Handling]
+
+pmontero@ip-172-30-0-7:[test]$ ./ex4_eh.py
+
+ [pynet_rtr3] and [pynet_rtr4] are not in the database
+
+ CURRENT DATABASE RECORDS
+
+-- pynet-rtr1 : cisco_ios
+
+-- pynet-rtr2 : cisco_ios
+
+-- pynet-sw1 : arista_eos
+
+-- pynet-sw2 : arista_eos
+
+-- pynet-sw3 : arista_eos
+
+-- pynet-sw4 : arista_eos
+
+-- juniper-srx : juniper
+
+pmontero@ip-172-30-0-7:[test]$ ./ex3.py
+
+ NEW added devices to the database ...
+
+-- pynet-rtr3 : nokia_timos
+
+-- pynet-rtr4 : nokia_timos
+
+pmontero@ip-172-30-0-7:[test]$ ./ex4_eh.py
+
+ [pynet_rtr3] and [pynet_rtr4] were effectively DELETED from the database
+
+ CURRENT DATABASE RECORDS
+
+-- pynet-rtr1 : cisco_ios
+
+-- pynet-rtr2 : cisco_ios
+
+-- pynet-sw1 : arista_eos
+
+-- pynet-sw2 : arista_eos
+
+-- pynet-sw3 : arista_eos
+
+-- pynet-sw4 : arista_eos
+
+-- juniper-srx : juniper
+
+// Exercise 5
+SERIALIZED | SYNCHRONOUS
+
+pmontero@ip-172-30-0-7:[test]$ ./ex5.py
+
+ <<--------------------------->>
+ Cisco IOS Software, C880 Software (C880DATA-UNIVERSALK9-M), Version 15.4(2)T1, RELEASE SOFTWARE (fc3)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2014 by Cisco Systems, Inc.
+Compiled Thu 26-Jun-14 14:15 by prod_rel_team
+
+ROM: System Bootstrap, Version 12.4(22r)YB5, RELEASE SOFTWARE (fc1)
+
+pynet-rtr1 uptime is 35 weeks, 6 days, 2 hours, 52 minutes
+System returned to ROM by reload
+System restarted at 12:42:54 PDT Wed Jun 22 2016
+System image file is "flash:c880data-universalk9-mz.154-2.T1.bin"
+Last reload type: Normal Reload
+Last reload reason: power-on
+
+
+
+This product contains cryptographic features and is subject to United
+States and local country laws governing import, export, transfer and
+use. Delivery of Cisco cryptographic products does not imply
+third-party authority to import, export, distribute or use encryption.
+Importers, exporters, distributors and users are responsible for
+compliance with U.S. and local country laws. By using this product you
+agree to comply with applicable laws and regulations. If you are unable
+to comply with U.S. and local laws, return this product immediately.
+
+A summary of U.S. laws governing Cisco cryptographic products may be found at:
+http://www.cisco.com/wwl/export/crypto/tool/stqrg.html
+
+If you require further assistance please contact us by sending email to
+export@cisco.com.
+
+Cisco 881 (MPC8300) processor (revision 1.0) with 236544K/25600K bytes of memory.
+Processor board ID FTX1512038X
+
+5 FastEthernet interfaces
+1 Virtual Private Network (VPN) Module
+256K bytes of non-volatile configuration memory.
+126000K bytes of ATA CompactFlash (Read/Write)
+
+
+License Info:
+
+License UDI:
+
+-------------------------------------------------
+Device#	  PID			SN
+-------------------------------------------------
+*0  	  CISCO881-SEC-K9       FTX1512038X
+
+
+
+License Information for 'c880-data'
+    License Level: advipservices   Type: Permanent
+    Next reboot license Level: advipservices
+
+
+Configuration register is 0x2102
+
+
+
+ <<--------------------------->>
+ Cisco IOS Software, C880 Software (C880DATA-UNIVERSALK9-M), Version 15.4(2)T1, RELEASE SOFTWARE (fc3)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2014 by Cisco Systems, Inc.
+Compiled Thu 26-Jun-14 14:15 by prod_rel_team
+
+ROM: System Bootstrap, Version 12.4(22r)YB5, RELEASE SOFTWARE (fc1)
+
+pynet-rtr2 uptime is 33 weeks, 5 days, 2 hours, 59 minutes
+System returned to ROM by reload at 19:10:00 UTC Thu Jul 7 2016
+System restarted at 12:35:56 PDT Thu Jul 7 2016
+System image file is "flash:c880data-universalk9-mz.154-2.T1.bin"
+Last reload type: Normal Reload
+Last reload reason: Reload Command
+
+
+
+This product contains cryptographic features and is subject to United
+States and local country laws governing import, export, transfer and
+use. Delivery of Cisco cryptographic products does not imply
+third-party authority to import, export, distribute or use encryption.
+Importers, exporters, distributors and users are responsible for
+compliance with U.S. and local country laws. By using this product you
+agree to comply with applicable laws and regulations. If you are unable
+to comply with U.S. and local laws, return this product immediately.
+
+A summary of U.S. laws governing Cisco cryptographic products may be found at:
+http://www.cisco.com/wwl/export/crypto/tool/stqrg.html
+
+If you require further assistance please contact us by sending email to
+export@cisco.com.
+
+Cisco 881 (MPC8300) processor (revision 1.0) with 236544K/25600K bytes of memory.
+Processor board ID FTX18298312
+
+5 FastEthernet interfaces
+1 Virtual Private Network (VPN) Module
+256K bytes of non-volatile configuration memory.
+125440K bytes of ATA CompactFlash (Read/Write)
+
+
+License Info:
+
+License UDI:
+
+-------------------------------------------------
+Device#	  PID			SN
+-------------------------------------------------
+*0  	  CISCO881-K9           FTX18298312
+
+
+
+License Information for 'c880-data'
+    License Level: advsecurity   Type: Permanent
+    Next reboot license Level: advsecurity
+
+
+Configuration register is 0x2102
+
+
+
+ <<--------------------------->>
+ Arista vEOS
+Hardware version:
+Serial number:
+System MAC address:  5254.aba8.9aea
+
+Software image version: 4.15.4F
+Architecture:           i386
+Internal build version: 4.15.4F-2923910.4154F
+Internal build ID:      d8a3c846-c735-4766-93cd-82bb7427da51
+
+Uptime:                 1 week, 3 days, 23 hours and 5 minutes
+Total memory:           3893916 kB
+Free memory:            1586328 kB
+
+
+
+ <<--------------------------->>
+ Arista vEOS
+Hardware version:
+Serial number:
+System MAC address:  5254.abbe.5b7b
+
+Software image version: 4.15.4F
+Architecture:           i386
+Internal build version: 4.15.4F-2923910.4154F
+Internal build ID:      d8a3c846-c735-4766-93cd-82bb7427da51
+
+Uptime:                 1 week, 3 days, 23 hours and 5 minutes
+Total memory:           3893916 kB
+Free memory:            1584360 kB
+
+
+
+ <<--------------------------->>
+ Arista vEOS
+Hardware version:
+Serial number:
+System MAC address:  5254.ab71.e119
+
+Software image version: 4.15.4F
+Architecture:           i386
+Internal build version: 4.15.4F-2923910.4154F
+Internal build ID:      d8a3c846-c735-4766-93cd-82bb7427da51
+
+Uptime:                 1 week, 3 days, 23 hours and 4 minutes
+Total memory:           3893916 kB
+Free memory:            1645080 kB
+
+
+
+ <<--------------------------->>
+ Arista vEOS
+Hardware version:
+Serial number:
+System MAC address:  5254.ab81.5693
+
+Software image version: 4.15.4F
+Architecture:           i386
+Internal build version: 4.15.4F-2923910.4154F
+Internal build ID:      d8a3c846-c735-4766-93cd-82bb7427da51
+
+Uptime:                 1 week, 3 days, 23 hours and 3 minutes
+Total memory:           3893916 kB
+Free memory:            1652032 kB
+
+
+
+ <<--------------------------->>
+
+Hostname: pynet-jnpr-srx1
+Model: srx100h2
+JUNOS Software Release [12.1X44-D35.5]
+
+
+This operation required 0:00:39.750869
+pmontero@ip-172-30-0-7:[test]$
+
+Others iterations of ./ex5.py:
+
+This operation required 0:00:39.927083
+This operation required 0:00:39.040663
+
+Fairly to use: 39.5 seconds
+
+// Exercise 6
+
+THREADING / ASYNCHRONOUS
+
+pmontero@ip-172-30-0-7:[test]$ ./ex6.py
+Notice: <Thread(Thread-1, started 140463203403520)>
+
+ <<--------------------------->>
+ Cisco IOS Software, C880 Software (C880DATA-UNIVERSALK9-M), Version 15.4(2)T1, RELEASE SOFTWARE (fc3)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2014 by Cisco Systems, Inc.
+Compiled Thu 26-Jun-14 14:15 by prod_rel_team
+
+ROM: System Bootstrap, Version 12.4(22r)YB5, RELEASE SOFTWARE (fc1)
+
+pynet-rtr2 uptime is 33 weeks, 5 days, 3 hours, 30 minutes
+System returned to ROM by reload at 19:10:00 UTC Thu Jul 7 2016
+System restarted at 12:35:56 PDT Thu Jul 7 2016
+System image file is "flash:c880data-universalk9-mz.154-2.T1.bin"
+Last reload type: Normal Reload
+Last reload reason: Reload Command
+
+
+
+This product contains cryptographic features and is subject to United
+States and local country laws governing import, export, transfer and
+use. Delivery of Cisco cryptographic products does not imply
+third-party authority to import, export, distribute or use encryption.
+Importers, exporters, distributors and users are responsible for
+compliance with U.S. and local country laws. By using this product you
+agree to comply with applicable laws and regulations. If you are unable
+to comply with U.S. and local laws, return this product immediately.
+
+A summary of U.S. laws governing Cisco cryptographic products may be found at:
+http://www.cisco.com/wwl/export/crypto/tool/stqrg.html
+
+If you require further assistance please contact us by sending email to
+export@cisco.com.
+
+Cisco 881 (MPC8300) processor (revision 1.0) with 236544K/25600K bytes of memory.
+Processor board ID FTX18298312
+
+5 FastEthernet interfaces
+1 Virtual Private Network (VPN) Module
+256K bytes of non-volatile configuration memory.
+125440K bytes of ATA CompactFlash (Read/Write)
+
+
+License Info:
+
+License UDI:
+
+-------------------------------------------------
+Device#	  PID			SN
+-------------------------------------------------
+*0  	  CISCO881-K9           FTX18298312
+
+
+
+License Information for 'c880-data'
+    License Level: advsecurity   Type: Permanent
+    Next reboot license Level: advsecurity
+
+
+Configuration register is 0x2102
+
+
+
+ <<--------------------------->>
+ Cisco IOS Software, C880 Software (C880DATA-UNIVERSALK9-M), Version 15.4(2)T1, RELEASE SOFTWARE (fc3)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2014 by Cisco Systems, Inc.
+Compiled Thu 26-Jun-14 14:15 by prod_rel_team
+
+ROM: System Bootstrap, Version 12.4(22r)YB5, RELEASE SOFTWARE (fc1)
+
+pynet-rtr1 uptime is 35 weeks, 6 days, 3 hours, 23 minutes
+System returned to ROM by reload
+System restarted at 12:42:54 PDT Wed Jun 22 2016
+System image file is "flash:c880data-universalk9-mz.154-2.T1.bin"
+Last reload type: Normal Reload
+Last reload reason: power-on
+
+
+
+This product contains cryptographic features and is subject to United
+States and local country laws governing import, export, transfer and
+use. Delivery of Cisco cryptographic products does not imply
+third-party authority to import, export, distribute or use encryption.
+Importers, exporters, distributors and users are responsible for
+compliance with U.S. and local country laws. By using this product you
+agree to comply with applicable laws and regulations. If you are unable
+to comply with U.S. and local laws, return this product immediately.
+
+A summary of U.S. laws governing Cisco cryptographic products may be found at:
+http://www.cisco.com/wwl/export/crypto/tool/stqrg.html
+
+If you require further assistance please contact us by sending email to
+export@cisco.com.
+
+Cisco 881 (MPC8300) processor (revision 1.0) with 236544K/25600K bytes of memory.
+Processor board ID FTX1512038X
+
+5 FastEthernet interfaces
+1 Virtual Private Network (VPN) Module
+256K bytes of non-volatile configuration memory.
+126000K bytes of ATA CompactFlash (Read/Write)
+
+
+License Info:
+
+License UDI:
+
+-------------------------------------------------
+Device#	  PID			SN
+-------------------------------------------------
+*0  	  CISCO881-SEC-K9       FTX1512038X
+
+
+
+License Information for 'c880-data'
+    License Level: advipservices   Type: Permanent
+    Next reboot license Level: advipservices
+
+
+Configuration register is 0x2102
+
+
+Notice: <Thread(Thread-2, stopped 140463195010816)>
+Notice: <Thread(Thread-6, started 140463161440000)>
+
+ <<--------------------------->>
+
+Hostname: pynet-jnpr-srx1
+Model: srx100h2
+JUNOS Software Release [12.1X44-D35.5]
+
+
+
+ <<--------------------------->>
+ Arista vEOS
+Hardware version:
+Serial number:
+System MAC address:  5254.abbe.5b7b
+
+Software image version: 4.15.4F
+Architecture:           i386
+Internal build version: 4.15.4F-2923910.4154F
+Internal build ID:      d8a3c846-c735-4766-93cd-82bb7427da51
+
+Uptime:                 1 week, 3 days, 23 hours and 35 minutes
+Total memory:           3893916 kB
+Free memory:            1583716 kB
+
+
+
+ <<--------------------------->>
+ Arista vEOS
+Hardware version:
+Serial number:
+System MAC address:  5254.ab71.e119
+
+Software image version: 4.15.4F
+Architecture:           i386
+Internal build version: 4.15.4F-2923910.4154F
+Internal build ID:      d8a3c846-c735-4766-93cd-82bb7427da51
+
+Uptime:                 1 week, 3 days, 23 hours and 34 minutes
+Total memory:           3893916 kB
+Free memory:            1644516 kB
+
+
+
+ <<--------------------------->>
+ Arista vEOS
+Hardware version:
+Serial number:
+System MAC address:  5254.ab81.5693
+
+Software image version: 4.15.4F
+Architecture:           i386
+Internal build version: 4.15.4F-2923910.4154F
+Internal build ID:      d8a3c846-c735-4766-93cd-82bb7427da51
+
+Uptime:                 1 week, 3 days, 23 hours and 33 minutes
+Total memory:           3893916 kB
+Free memory:            1651452 kB
+
+
+
+ <<--------------------------->>
+ Arista vEOS
+Hardware version:
+Serial number:
+System MAC address:  5254.aba8.9aea
+
+Software image version: 4.15.4F
+Architecture:           i386
+Internal build version: 4.15.4F-2923910.4154F
+Internal build ID:      d8a3c846-c735-4766-93cd-82bb7427da51
+
+Uptime:                 1 week, 3 days, 23 hours and 36 minutes
+Total memory:           3893916 kB
+Free memory:            1585996 kB
+
+
+Notice: <Thread(Thread-5, stopped 140463169832704)>
+Notice: <Thread(Thread-4, stopped 140463178225408)>
+Notice: <Thread(Thread-3, started 140463186618112)>
+Notice: <Thread(Thread-7, stopped 140462811772672)>
+This operation required 0:00:08.148288
+pmontero@ip-172-30-0-7:[test]$
+
+Other iterations of ./ex6.py
+
+pmontero@ip-172-30-0-7:[test]$
+This operation required 0:00:08.348181
+This operation required 0:00:08.720885
+This operation required 0:00:08.887280
+This operation required 0:00:08.521996
+
+Fairly to use: 8.5 seconds
+
+Difference between SERIALIZED and MULTI_THREADING: 39.5s - 8.5s == 31 seconds
+
+// Exercise 7
+
+MULTIPLE_PROCESSES
+
+pmontero@ip-172-30-0-7:[test]$ ./ex7.py
+Notice: <Process(Process-1, started)>
+
+ <<--------------------------->>
+ Cisco IOS Software, C880 Software (C880DATA-UNIVERSALK9-M), Version 15.4(2)T1, RELEASE SOFTWARE (fc3)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2014 by Cisco Systems, Inc.
+Compiled Thu 26-Jun-14 14:15 by prod_rel_team
+
+ROM: System Bootstrap, Version 12.4(22r)YB5, RELEASE SOFTWARE (fc1)
+
+pynet-rtr2 uptime is 33 weeks, 5 days, 3 hours, 51 minutes
+System returned to ROM by reload at 19:10:00 UTC Thu Jul 7 2016
+System restarted at 12:35:56 PDT Thu Jul 7 2016
+System image file is "flash:c880data-universalk9-mz.154-2.T1.bin"
+Last reload type: Normal Reload
+Last reload reason: Reload Command
+
+
+
+This product contains cryptographic features and is subject to United
+States and local country laws governing import, export, transfer and
+use. Delivery of Cisco cryptographic products does not imply
+third-party authority to import, export, distribute or use encryption.
+Importers, exporters, distributors and users are responsible for
+compliance with U.S. and local country laws. By using this product you
+agree to comply with applicable laws and regulations. If you are unable
+to comply with U.S. and local laws, return this product immediately.
+
+A summary of U.S. laws governing Cisco cryptographic products may be found at:
+http://www.cisco.com/wwl/export/crypto/tool/stqrg.html
+
+If you require further assistance please contact us by sending email to
+export@cisco.com.
+
+Cisco 881 (MPC8300) processor (revision 1.0) with 236544K/25600K bytes of memory.
+Processor board ID FTX18298312
+
+5 FastEthernet interfaces
+1 Virtual Private Network (VPN) Module
+256K bytes of non-volatile configuration memory.
+125440K bytes of ATA CompactFlash (Read/Write)
+
+
+License Info:
+
+License UDI:
+
+-------------------------------------------------
+Device#	  PID			SN
+-------------------------------------------------
+*0  	  CISCO881-K9           FTX18298312
+
+
+
+License Information for 'c880-data'
+    License Level: advsecurity   Type: Permanent
+    Next reboot license Level: advsecurity
+
+
+Configuration register is 0x2102
+
+
+
+ <<--------------------------->>
+ Cisco IOS Software, C880 Software (C880DATA-UNIVERSALK9-M), Version 15.4(2)T1, RELEASE SOFTWARE (fc3)
+Technical Support: http://www.cisco.com/techsupport
+Copyright (c) 1986-2014 by Cisco Systems, Inc.
+Compiled Thu 26-Jun-14 14:15 by prod_rel_team
+
+ROM: System Bootstrap, Version 12.4(22r)YB5, RELEASE SOFTWARE (fc1)
+
+pynet-rtr1 uptime is 35 weeks, 6 days, 3 hours, 44 minutes
+System returned to ROM by reload
+System restarted at 12:42:54 PDT Wed Jun 22 2016
+System image file is "flash:c880data-universalk9-mz.154-2.T1.bin"
+Last reload type: Normal Reload
+Last reload reason: power-on
+
+
+
+This product contains cryptographic features and is subject to United
+States and local country laws governing import, export, transfer and
+use. Delivery of Cisco cryptographic products does not imply
+third-party authority to import, export, distribute or use encryption.
+Importers, exporters, distributors and users are responsible for
+compliance with U.S. and local country laws. By using this product you
+agree to comply with applicable laws and regulations. If you are unable
+to comply with U.S. and local laws, return this product immediately.
+
+A summary of U.S. laws governing Cisco cryptographic products may be found at:
+http://www.cisco.com/wwl/export/crypto/tool/stqrg.html
+
+If you require further assistance please contact us by sending email to
+export@cisco.com.
+
+Cisco 881 (MPC8300) processor (revision 1.0) with 236544K/25600K bytes of memory.
+Processor board ID FTX1512038X
+
+5 FastEthernet interfaces
+1 Virtual Private Network (VPN) Module
+256K bytes of non-volatile configuration memory.
+126000K bytes of ATA CompactFlash (Read/Write)
+
+
+License Info:
+
+License UDI:
+
+-------------------------------------------------
+Device#	  PID			SN
+-------------------------------------------------
+*0  	  CISCO881-SEC-K9       FTX1512038X
+
+
+
+License Information for 'c880-data'
+    License Level: advipservices   Type: Permanent
+    Next reboot license Level: advipservices
+
+
+Configuration register is 0x2102
+
+
+Notice: <Process(Process-2, stopped)>
+Notice: <Process(Process-3, started)>
+
+ <<--------------------------->>
+
+Hostname: pynet-jnpr-srx1
+Model: srx100h2
+JUNOS Software Release [12.1X44-D35.5]
+
+
+
+ <<--------------------------->>
+ Arista vEOS
+Hardware version:
+Serial number:
+System MAC address:  5254.ab81.5693
+
+Software image version: 4.15.4F
+Architecture:           i386
+Internal build version: 4.15.4F-2923910.4154F
+Internal build ID:      d8a3c846-c735-4766-93cd-82bb7427da51
+
+Uptime:                 1 week, 3 days, 23 hours and 54 minutes
+Total memory:           3893916 kB
+Free memory:            1650676 kB
+
+
+
+ <<--------------------------->>
+ Arista vEOS
+Hardware version:
+Serial number:
+System MAC address:  5254.aba8.9aea
+
+Software image version: 4.15.4F
+Architecture:           i386
+Internal build version: 4.15.4F-2923910.4154F
+Internal build ID:      d8a3c846-c735-4766-93cd-82bb7427da51
+
+Uptime:                 1 week, 3 days, 23 hours and 57 minutes
+Total memory:           3893916 kB
+Free memory:            1585120 kB
+
+
+
+ <<--------------------------->>
+ Arista vEOS
+Hardware version:
+Serial number:
+System MAC address:  5254.abbe.5b7b
+
+Software image version: 4.15.4F
+Architecture:           i386
+Internal build version: 4.15.4F-2923910.4154F
+Internal build ID:      d8a3c846-c735-4766-93cd-82bb7427da51
+
+Uptime:                 1 week, 3 days, 23 hours and 56 minutes
+Total memory:           3893916 kB
+Free memory:            1583088 kB
+
+
+
+ <<--------------------------->>
+ Arista vEOS
+Hardware version:
+Serial number:
+System MAC address:  5254.ab71.e119
+
+Software image version: 4.15.4F
+Architecture:           i386
+Internal build version: 4.15.4F-2923910.4154F
+Internal build ID:      d8a3c846-c735-4766-93cd-82bb7427da51
+
+Uptime:                 1 week, 3 days, 23 hours and 55 minutes
+Total memory:           3893916 kB
+Free memory:            1644276 kB
+
+
+Notice: <Process(Process-4, stopped)>
+Notice: <Process(Process-5, started)>
+Notice: <Process(Process-6, stopped)>
+Notice: <Process(Process-7, stopped)>
+This operation required 0:00:08.366622
+pmontero@ip-172-30-0-7:[test]$
+
+Other iterations of ./ex7.py
+
+pmontero@ip-172-30-0-7:[test]$
+This operation required 0:00:08.502775
+This operation required 0:00:08.390857
+This operation required 0:00:09.779083
+This operation required 0:00:08.573760
+This operation required 0:00:08.170415
+This operation required 0:00:08.439827
+
+Fairly to use: 8.5 seconds
+
+Difference between SERIALIZED and MULTIPLE_PROCESSING: 39.5s - 8.5s == 31 seconds
+
+Difference between MULTIPLE_THREADING and MULTIPLE_PROCESSING on the ms.
+
+// end-results-file
